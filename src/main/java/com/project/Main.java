@@ -16,7 +16,7 @@ public class Main extends Application {
         primaryStage.setTitle("Hello JavaFX");
 
         Label label = new Label("Welcome to JavaFX with Java 21!");
-        Button button = new Button("Click Meeeeeeee");
+        Button button = new Button("BONJOUUUUR");
 
         button.setOnAction(e -> label.setText("Button clicked!"));
 
