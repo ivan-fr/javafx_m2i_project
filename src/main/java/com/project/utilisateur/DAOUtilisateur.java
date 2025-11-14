@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class DAOUtilisateur  {
     private Connection conn;
 
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String URL = dotenv.get("DB_URL");
+    private static final String USER = dotenv.get("DB_USER");
+    private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
     public DAOUtilisateur() {
         this.conn = DbConnection.getConnection();
@@ -25,14 +29,25 @@ public class DAOUtilisateur  {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Utilisateur utilisateur = new Utilisateur(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("email"),
-                    rs.getString("mot_de_passe"),
-                    rs.getString("type_compte"),
-                    rs.getTimestamp("date_creation")
-                );
+                Utilisateur utilisateur;
+                String type = rs.getString("type_compte");
+                if (type.equalsIgnoreCase("CLIENT")) {
+                    utilisateur = new Client(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        rs.getString("mot_de_passe")
+                    );
+                } else {
+                    utilisateur = new Organisateur(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        rs.getString("mot_de_passe")
+                    );
+                }
+                utilisateur.setDateCreation(rs.getTimestamp("date_creation"));
+
                 listeUtilisateurs.add(utilisateur);
             }
 
