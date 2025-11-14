@@ -3,6 +3,9 @@ package com.project;
 import com.project.db.DbConnection;
 import com.project.utilisateur.DAOUtilisateur;
 import com.project.utilisateur.Utilisateur;
+import com.project.utilisateur.Client;
+import com.project.utilisateur.Organisateur;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -17,11 +20,21 @@ public class Main {
         dao.ajouter(u2);
 
         ArrayList<Utilisateur> users = dao.lister();
-        for (Utilisateur u : users) {
-            System.out.println(u);
-            dao.supprimer(u);
+        
+        
+        Client c = new Client("Alice", "alice@mail.com", "1234");
+        Organisateur o = new Organisateur("Bob", "bob@mail.com", "abcd");
+
+       
+        
+        ArrayList<Utilisateur> liste = dao.lister();
+        for (Utilisateur u : liste) {
+            System.out.println(u.getNom() + " -> " + u.getTypeCompte());
         }
 
+        dao.supprimer(liste.get(0));
+        dao.supprimer(liste.get(1));
+        
         DbConnection.fermerConnexion();
     }
 }
