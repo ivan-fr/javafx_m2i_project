@@ -9,60 +9,60 @@ import java.util.List;
 
 public class CategoryPlaceDAO {
 
-    public static void ajouterCategoryPlace(CategoryPlace c) {
+    public static void ajouterCategoryPlace(CategoryPlace categoryPlace) {
         String sql = "INSERT INTO category_places (evenement_id,categorie,nb_places,prix) VALUES (?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, c.getEvenementId());
-            ps.setString(2, c.getCategorie());
-            ps.setInt(3, c.getNbPlaces());
-            ps.setDouble(4, c.getPrix());
-            ps.executeUpdate();
+            preparedStatement.setInt(1, categoryPlace.getEvenementId());
+            preparedStatement.setString(2, categoryPlace.getCategorie());
+            preparedStatement.setInt(3, categoryPlace.getNbPlaces());
+            preparedStatement.setDouble(4, categoryPlace.getPrix());
+            preparedStatement.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                c.setId(rs.getInt(1));
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                categoryPlace.setId(resultSet.getInt(1));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public static List<CategoryPlace> getCategoryPlacesParEvenement(int evenementId) {
+    public static List<CategoryPlace> getCategoryPlacesParEvenement(com.project.entity.evenement.Evenement evenement) {
         List<CategoryPlace> liste = new ArrayList<>();
         String sql = "SELECT * FROM category_places WHERE evenement_id=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, evenementId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                CategoryPlace c = new CategoryPlace(rs.getString("categorie"),
-                        rs.getInt("nb_places"),
-                        rs.getDouble("prix"));
-                c.setId(rs.getInt("id"));
-                c.setEvenementId(evenementId);
-                liste.add(c);
+            preparedStatement.setInt(1, evenement.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                CategoryPlace categoryPlace = new CategoryPlace(resultSet.getString("categorie"),
+                        resultSet.getInt("nb_places"),
+                        resultSet.getDouble("prix"));
+                categoryPlace.setId(resultSet.getInt("id"));
+                categoryPlace.setEvenementId(evenement.getId());
+                liste.add(categoryPlace);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return liste;
     }
 
-    public static void updateCategoryPlace(CategoryPlace c) {
+    public static void updateCategoryPlace(CategoryPlace categoryPlace) {
         String sql = "UPDATE category_places SET nb_places=?, prix=? WHERE id=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, c.getNbPlaces());
-            ps.setDouble(2, c.getPrix());
-            ps.setInt(3, c.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, categoryPlace.getNbPlaces());
+            preparedStatement.setDouble(2, categoryPlace.getPrix());
+            preparedStatement.setInt(3, categoryPlace.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -70,29 +70,21 @@ public class CategoryPlaceDAO {
      * Calcule le nombre de places disponibles pour une category_place
      * Formule : nb_places - nombre de réservations
      */
-    public static int getPlacesDisponibles(CategoryPlace c) {
-        return getPlacesDisponiblesById(c.getId());
-    }
-
-    /**
-     * Surcharge pour obtenir les places disponibles par ID
-     * Utile pour les vérifications avant d'avoir l'objet complet
-     */
-    public static int getPlacesDisponiblesById(int categoryPlaceId) {
+    public static int getPlacesDisponibles(CategoryPlace categoryPlace) {
         String sql = "SELECT cp.nb_places - COUNT(r.id) AS places_disponibles " +
                      "FROM category_places cp " +
                      "LEFT JOIN reservations r ON cp.id = r.category_place_id " +
                      "WHERE cp.id = ? " +
                      "GROUP BY cp.id, cp.nb_places";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, categoryPlaceId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("places_disponibles");
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, categoryPlace.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("places_disponibles");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return 0;
     }

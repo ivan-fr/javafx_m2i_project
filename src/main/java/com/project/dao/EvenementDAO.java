@@ -12,32 +12,32 @@ import java.util.List;
 
 public class EvenementDAO {
 
-    public static void ajouterEvenement(Evenement e, String type) {
+    public static void ajouterEvenement(Evenement evenement, String type) {
         String sql = "INSERT INTO evenements (nom,date,lieu,type_evenement,organisateur_id) VALUES (?,?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, e.getNom());
-            ps.setTimestamp(2, Timestamp.valueOf(e.getDate()));
-            ps.setString(3, e.getLieu());
-            ps.setString(4, type);
-            ps.setInt(5, e.getOrganisateurId());
-            ps.executeUpdate();
+            preparedStatement.setString(1, evenement.getNom());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(evenement.getDate()));
+            preparedStatement.setString(3, evenement.getLieu());
+            preparedStatement.setString(4, type);
+            preparedStatement.setInt(5, evenement.getOrganisateurId());
+            preparedStatement.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int idEvenement = rs.getInt(1);
-                e.setId(idEvenement);
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                int idEvenement = resultSet.getInt(1);
+                evenement.setId(idEvenement);
 
                 // Ajouter les catégories via CategoryPlaceDAO
-                for (CategoryPlace c : e.getCategories()) {
-                    c.setEvenementId(idEvenement); // Définir l'ID de l'événement sur chaque catégorie
-                    CategoryPlaceDAO.ajouterCategoryPlace(c);
+                for (CategoryPlace categoryPlace : evenement.getCategories()) {
+                    categoryPlace.setEvenementId(idEvenement);
+                    CategoryPlaceDAO.ajouterCategoryPlace(categoryPlace);
                 }
             }
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -45,34 +45,34 @@ public class EvenementDAO {
         List<Evenement> liste = new ArrayList<>();
         String sql = "SELECT * FROM evenements";
         try (Connection conn = DbConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
 
-            while (rs.next()) {
-                String nom = rs.getString("nom");
-                LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
-                String lieu = rs.getString("lieu");
-                String type = rs.getString("type_evenement");
-                int idEvenement = rs.getInt("id");
-                int organisateurId = rs.getInt("organisateur_id");
+            while (resultSet.next()) {
+                String nom = resultSet.getString("nom");
+                LocalDateTime date = resultSet.getTimestamp("date").toLocalDateTime();
+                String lieu = resultSet.getString("lieu");
+                String type = resultSet.getString("type_evenement");
+                int idEvenement = resultSet.getInt("id");
+                int organisateurId = resultSet.getInt("organisateur_id");
 
-                Evenement e = switch (type) {
+                Evenement evenement = switch (type) {
                     case "CONCERT" -> new Concert(nom, date, lieu);
                     case "SPECTACLE" -> new Spectacle(nom, date, lieu);
                     case "CONFERENCE" -> new Conference(nom, date, lieu);
                     default -> null;
                 };
 
-                if (e != null) {
-                    e.setId(idEvenement);
-                    e.setOrganisateurId(organisateurId);
-                    e.getCategories().addAll(CategoryPlaceDAO.getCategoryPlacesParEvenement(idEvenement));
-                    liste.add(e);
+                if (evenement != null) {
+                    evenement.setId(idEvenement);
+                    evenement.setOrganisateurId(organisateurId);
+                    evenement.getCategories().addAll(CategoryPlaceDAO.getCategoryPlacesParEvenement(evenement));
+                    liste.add(evenement);
                 }
             }
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return liste;
     }

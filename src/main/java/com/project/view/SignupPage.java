@@ -60,20 +60,7 @@ public class SignupPage {
             String password = pwdField.getText();
             String typeCompte = typeComboBox.getValue();
 
-            if (nom.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                messageLabel.setText("Veuillez remplir tous les champs !");
-                return;
-            }
-
-            if (password.length() < 4) {
-                messageLabel.setText("Le mot de passe doit contenir au moins 4 caractères !");
-                return;
-            }
-
-            if (!email.contains("@")) {
-                messageLabel.setText("Email invalide !");
-                return;
-            }
+            // Faire la logique de validation ici :)
 
             Utilisateur utilisateur;
             if (typeCompte.equals("CLIENT")) {

@@ -24,121 +24,121 @@ public class UtilisateurDAO {
         ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
         try {
             String sql = "SELECT id, nom, email, mot_de_passe, type_compte, date_creation FROM utilisateurs";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (rs.next()) {
+            while (resultSet.next()) {
                 Utilisateur utilisateur;
-                String type = rs.getString("type_compte");
+                String type = resultSet.getString("type_compte");
                 if (type.equalsIgnoreCase("CLIENT")) {
                     utilisateur = new Client(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getString("email"),
-                        rs.getString("mot_de_passe")
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("email"),
+                        resultSet.getString("mot_de_passe")
                     );
                 } else {
                     utilisateur = new Organisateur(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getString("email"),
-                        rs.getString("mot_de_passe")
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("email"),
+                        resultSet.getString("mot_de_passe")
                     );
                 }
-                utilisateur.setDateCreation(rs.getTimestamp("date_creation"));
+                utilisateur.setDateCreation(resultSet.getTimestamp("date_creation"));
 
                 listeUtilisateurs.add(utilisateur);
             }
 
-            rs.close();
-            pstmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return listeUtilisateurs;
     }
 
     // Ajouter un utilisateur avec un objet Utilisateur
-    public void ajouter(Utilisateur u) {
+    public void ajouter(Utilisateur utilisateur) {
         try {
             String sql = "INSERT INTO utilisateurs (nom, email, mot_de_passe, type_compte) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            pstmt.setString(1, u.getNom());
-            pstmt.setString(2, u.getEmail());
-            pstmt.setString(3, u.getMotDePasse());
-            pstmt.setString(4, u.getTypeCompte());
-            pstmt.executeUpdate();
+            preparedStatement.setString(1, utilisateur.getNom());
+            preparedStatement.setString(2, utilisateur.getEmail());
+            preparedStatement.setString(3, utilisateur.getMotDePasse());
+            preparedStatement.setString(4, utilisateur.getTypeCompte());
+            preparedStatement.executeUpdate();
 
-            System.out.println("Utilisateur ajouté avec succès: " + u.getNom());
-            pstmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Utilisateur ajouté avec succès: " + utilisateur.getNom());
+            preparedStatement.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
     public static Utilisateur login(String email, String motDePasse) {
         String sql = "SELECT * FROM utilisateurs WHERE email=? AND mot_de_passe=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, motDePasse);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String nom = rs.getString("nom");
-                String type = rs.getString("type_compte");
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, motDePasse);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String nom = resultSet.getString("nom");
+                String type = resultSet.getString("type_compte");
                 if (type.equals("CLIENT")) return new Client(nom, email, motDePasse);
                 else return new Organisateur(nom, email, motDePasse);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return null;
     }
     // Supprimer un utilisateur avec un objet Utilisateur
-    public void supprimer(Utilisateur u) {
+    public void supprimer(Utilisateur utilisateur) {
         try {
             String sql = "DELETE FROM utilisateurs WHERE id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            pstmt.setInt(1, u.getId());
-            int rowsAffected = pstmt.executeUpdate();
+            preparedStatement.setInt(1, utilisateur.getId());
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Utilisateur supprimé avec succès: " + u.getNom());
+                System.out.println("Utilisateur supprimé avec succès: " + utilisateur.getNom());
             } else {
-                System.out.println("Aucun utilisateur trouvé avec l'ID: " + u.getId());
+                System.out.println("Aucun utilisateur trouvé avec l'ID: " + utilisateur.getId());
             }
 
-            pstmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            preparedStatement.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
     // Mettre à jour un utilisateur
-    public void modifier(Utilisateur u) {
+    public void modifier(Utilisateur utilisateur) {
         try {
             String sql = "UPDATE utilisateurs SET nom = ?, email = ?, mot_de_passe = ?, type_compte = ? WHERE id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            pstmt.setString(1, u.getNom());
-            pstmt.setString(2, u.getEmail());
-            pstmt.setString(3, u.getMotDePasse());
-            pstmt.setString(4, u.getTypeCompte());
-            pstmt.setInt(5, u.getId());
+            preparedStatement.setString(1, utilisateur.getNom());
+            preparedStatement.setString(2, utilisateur.getEmail());
+            preparedStatement.setString(3, utilisateur.getMotDePasse());
+            preparedStatement.setString(4, utilisateur.getTypeCompte());
+            preparedStatement.setInt(5, utilisateur.getId());
 
-            int rowsAffected = pstmt.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Utilisateur modifié avec succès: " + u.getNom());
+                System.out.println("Utilisateur modifié avec succès: " + utilisateur.getNom());
             } else {
-                System.out.println("Aucun utilisateur trouvé avec l'ID: " + u.getId());
+                System.out.println("Aucun utilisateur trouvé avec l'ID: " + utilisateur.getId());
             }
 
-            pstmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            preparedStatement.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }
