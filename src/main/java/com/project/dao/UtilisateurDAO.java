@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class UtilisateurDAO {
     private Connection conn;
 
-    public DAOUtilisateur() {
+    public UtilisateurDAO() {
         this.conn = DbConnection.getConnection();
     }
 
