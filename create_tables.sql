@@ -1,4 +1,4 @@
-CREATE TABLE utilisateur (
+CREATE TABLE utilisateurs (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               nom VARCHAR(100) NOT NULL,
                               email VARCHAR(150) NOT NULL UNIQUE,
@@ -7,17 +7,17 @@ CREATE TABLE utilisateur (
                               date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE evenement (
+CREATE TABLE evenements (
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             nom VARCHAR(100) NOT NULL,
                             date DATETIME NOT NULL,
                             lieu VARCHAR(100) NOT NULL,
-                            type_evenement ENUM('CONCERT','SPECTACLE','CONFERENCE') NOT NUL,
+                            type_evenement ENUM('CONCERT','SPECTACLE','CONFERENCE') NOT NULL,
                             organisateur_id INTEGER NOT NULL,
-                            FOREIGN KEY (organisateur_id) REFERENCES utilisateur(id)
+                            FOREIGN KEY (organisateur_id) REFERENCES utilisateurs(id)
 );
 
-CREATE TABLE category_place (
+CREATE TABLE category_places (
                                    id INT AUTO_INCREMENT PRIMARY KEY,
                                    evenement_id INT,
                                    categorie VARCHAR(50),
@@ -28,7 +28,7 @@ CREATE TABLE category_place (
 
 
 
-CREATE TABLE reservation (
+CREATE TABLE reservations (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               client_id INT,
                               evenement_id INT,
@@ -36,5 +36,5 @@ CREATE TABLE reservation (
                               date_reservation DATETIME,
                               FOREIGN KEY (client_id) REFERENCES utilisateurs(id),
                               FOREIGN KEY (evenement_id) REFERENCES evenements(id),
-                              FOREIGN KEY (category_place_id) REFERENCES category_place(id)
+                              FOREIGN KEY (category_place_id) REFERENCES category_places(id)
 );

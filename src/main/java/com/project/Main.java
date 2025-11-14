@@ -1,80 +1,17 @@
 package com.project;
 
-import com.project.util.DbConnection;
-import com.project.dao.UtilisateurDAO;
-import com.project.entity.utilisateur.Utilisateur;
+import com.project.view.LoginPage;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
-public class Main  extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Connexion - Plateforme Réservation");
-
-        // GridPane pour layout
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setVgap(10);
-        grid.setHgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-        // Email
-        Label emailLabel = new Label("Email :");
-        TextField emailField = new TextField();
-        grid.add(emailLabel, 0, 0);
-        grid.add(emailField, 1, 0);
-
-        // Mot de passe
-        Label pwdLabel = new Label("Mot de passe :");
-        PasswordField pwdField = new PasswordField();
-        grid.add(pwdLabel, 0, 1);
-        grid.add(pwdField, 1, 1);
-
-        // Message d'erreur
-        Label messageLabel = new Label();
-        grid.add(messageLabel, 1, 2);
-
-        // Bouton de connexion
-        Button btnLogin = new Button("Se connecter");
-        grid.add(btnLogin, 1, 3);
-
-        btnLogin.setOnAction(e -> {
-            String email = emailField.getText();
-            String password = pwdField.getText();
-
-            if (email.isEmpty() || password.isEmpty()) {
-                messageLabel.setText("Veuillez remplir tous les champs !");
-                return;
-            }
-
-            Utilisateur user = UtilisateurDAO.login(email, password);
-            if (user != null) {
-                messageLabel.setText("Connexion réussie ! Bienvenue " + user.getNom());
-                // TODO : ouvrir Dashboard Client ou Organisateur selon type
-            } else {
-                messageLabel.setText("Email ou mot de passe incorrect !");
-            }
-        });
-
-        // Bouton création compte
-        Button btnRegister = new Button("Créer un compte");
-        grid.add(btnRegister, 1, 4);
-        btnRegister.setOnAction(e -> {
-            // TODO : ouvrir page de création de compte
-            messageLabel.setText("Fonction création compte non implémentée");
-        });
-
-        Scene scene = new Scene(grid, 400, 300);
+        Scene scene = LoginPage.getScene(primaryStage);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

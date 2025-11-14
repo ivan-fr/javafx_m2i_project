@@ -1,48 +1,54 @@
 package com.project.entity;
 
-import com.project.entity.evenement.Evenement;
-import com.project.entity.utilisateur.Client;
-
 import java.time.LocalDateTime;
 
 public class Reservation {
-    private Client client;
-    private Evenement evenement;
-    private String categorie;
-    private int nbTickets;
+    private int id; // id en BDD
+    private int clientId; // FK vers utilisateurs (CLIENT)
+    private int evenementId; // FK vers evenements
+    private int categoryPlaceId; // FK vers category_places
     private LocalDateTime dateReservation;
 
-
-    public Client getClient() {
-        return client;
+    public Reservation() {
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public Reservation(int clientId, int evenementId, int categoryPlaceId, LocalDateTime dateReservation) {
+        this.clientId = clientId;
+        this.evenementId = evenementId;
+        this.categoryPlaceId = categoryPlaceId;
+        this.dateReservation = dateReservation;
     }
 
-    public Evenement getEvenement() {
-        return evenement;
+    public int getId() {
+        return id;
     }
 
-    public void setEvenement(Evenement evenement) {
-        this.evenement = evenement;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getCategorie() {
-        return categorie;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
-    public int getNbTickets() {
-        return nbTickets;
+    public int getEvenementId() {
+        return evenementId;
     }
 
-    public void setNbTickets(int nbTickets) {
-        this.nbTickets = nbTickets;
+    public void setEvenementId(int evenementId) {
+        this.evenementId = evenementId;
+    }
+
+    public int getCategoryPlaceId() {
+        return categoryPlaceId;
+    }
+
+    public void setCategoryPlaceId(int categoryPlaceId) {
+        this.categoryPlaceId = categoryPlaceId;
     }
 
     public LocalDateTime getDateReservation() {
@@ -52,5 +58,4 @@ public class Reservation {
     public void setDateReservation(LocalDateTime dateReservation) {
         this.dateReservation = dateReservation;
     }
-
 }

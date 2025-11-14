@@ -16,7 +16,12 @@ public class LoginPage extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Connexion - Plateforme Réservation");
+        Scene scene = getScene(primaryStage);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
+    public static Scene getScene(Stage stage) {
         // GridPane pour layout
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -66,13 +71,11 @@ public class LoginPage extends Application {
         Button btnRegister = new Button("Créer un compte");
         grid.add(btnRegister, 1, 4);
         btnRegister.setOnAction(e -> {
-            // TODO : ouvrir page de création de compte
-            messageLabel.setText("Fonction création compte non implémentée");
+            Scene signupScene = SignupPage.getScene(stage);
+            stage.setScene(signupScene);
         });
 
-        Scene scene = new Scene(grid, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return new Scene(grid, 400, 300);
     }
 
     public static void main(String[] args) {

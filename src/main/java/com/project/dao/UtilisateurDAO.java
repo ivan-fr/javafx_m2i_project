@@ -23,7 +23,7 @@ public class UtilisateurDAO {
     public ArrayList<Utilisateur> lister() {
         ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
         try {
-            String sql = "SELECT id, nom, email, mot_de_passe, type_compte, date_creation FROM utilisateur";
+            String sql = "SELECT id, nom, email, mot_de_passe, type_compte, date_creation FROM utilisateurs";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
 
@@ -61,7 +61,7 @@ public class UtilisateurDAO {
     // Ajouter un utilisateur avec un objet Utilisateur
     public void ajouter(Utilisateur u) {
         try {
-            String sql = "INSERT INTO utilisateur (nom, email, mot_de_passe, type_compte) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO utilisateurs (nom, email, mot_de_passe, type_compte) VALUES (?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, u.getNom());
@@ -78,7 +78,7 @@ public class UtilisateurDAO {
     }
 
     public static Utilisateur login(String email, String motDePasse) {
-        String sql = "SELECT * FROM utilisateur WHERE email=? AND mot_de_passe=?";
+        String sql = "SELECT * FROM utilisateurs WHERE email=? AND mot_de_passe=?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -98,7 +98,7 @@ public class UtilisateurDAO {
     // Supprimer un utilisateur avec un objet Utilisateur
     public void supprimer(Utilisateur u) {
         try {
-            String sql = "DELETE FROM utilisateur WHERE id = ?";
+            String sql = "DELETE FROM utilisateurs WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, u.getId());
@@ -119,7 +119,7 @@ public class UtilisateurDAO {
     // Mettre à jour un utilisateur
     public void modifier(Utilisateur u) {
         try {
-            String sql = "UPDATE utilisateur SET nom = ?, email = ?, mot_de_passe = ?, type_compte = ? WHERE id = ?";
+            String sql = "UPDATE utilisateurs SET nom = ?, email = ?, mot_de_passe = ?, type_compte = ? WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, u.getNom());

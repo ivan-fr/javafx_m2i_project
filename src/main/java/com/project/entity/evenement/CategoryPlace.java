@@ -1,14 +1,15 @@
 package com.project.entity.evenement;
 
 
-public class Categorie {
+public class CategoryPlace {
     private int id; // pour la BDD
-    private String nom;
+    private int evenementId; // FK vers evenements
+    private String categorie;
     private int nbPlaces;
     private double prix;
 
-    public Categorie(String nom, int nbPlaces, double prix) {
-        this.nom = nom;
+    public CategoryPlace(String categorie, int nbPlaces, double prix) {
+        this.categorie = categorie;
         this.nbPlaces = nbPlaces;
         this.prix = prix;
     }
@@ -21,8 +22,20 @@ public class Categorie {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public int getEvenementId() {
+        return evenementId;
+    }
+
+    public void setEvenementId(int evenementId) {
+        this.evenementId = evenementId;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
     }
 
     public int getNbPlaces() {
