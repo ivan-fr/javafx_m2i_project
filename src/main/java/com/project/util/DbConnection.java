@@ -1,4 +1,4 @@
-package com.project.db;
+package com.project.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

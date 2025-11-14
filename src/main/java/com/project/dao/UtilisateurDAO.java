@@ -1,16 +1,18 @@
-package com.project.utilisateur;
+package com.project.dao;
 
-import com.project.db.DbConnection;
+import com.project.util.DbConnection;
+import com.project.entity.utilisateur.Client;
+import com.project.entity.utilisateur.Organisateur;
+import com.project.entity.utilisateur.Utilisateur;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DAOUtilisateur  {
+public class UtilisateurDAO {
     private Connection conn;
-
-
 
     public DAOUtilisateur() {
         this.conn = DbConnection.getConnection();
@@ -75,6 +77,24 @@ public class DAOUtilisateur  {
         }
     }
 
+    public static Utilisateur login(String email, String motDePasse) {
+        String sql = "SELECT * FROM utilisateur WHERE email=? AND mot_de_passe=?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, motDePasse);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String nom = rs.getString("nom");
+                String type = rs.getString("type_compte");
+                if (type.equals("CLIENT")) return new Client(nom, email, motDePasse);
+                else return new Organisateur(nom, email, motDePasse);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     // Supprimer un utilisateur avec un objet Utilisateur
     public void supprimer(Utilisateur u) {
         try {
