@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/target/
-=======
 # Maven
 target/
 pom.xml.tag
@@ -62,4 +59,3 @@ Thumbs.db
 
 # JavaFX specific
 *.fxml~
->>>>>>> 01df346a2263ccc9a438b9592b1cca74bd6ca352
