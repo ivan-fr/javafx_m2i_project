@@ -1,36 +1,26 @@
 package com.project;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.geometry.Pos;
-import javafx.geometry.Insets;
+import com.project.utilisateur.DAOUtilisateur;
+import com.project.utilisateur.Utilisateur;
+import java.util.ArrayList;
 
-public class Main extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello JavaFX");
-
-        Label label = new Label("Welcome to JavaFX with Java 21!");
-        Button button = new Button("BONJOUUUUR");
-
-        button.setOnAction(e -> label.setText("Button clicked!"));
-
-        VBox root = new VBox(15);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(20));
-        root.getChildren().addAll(label, button);
-
-        Scene scene = new Scene(root, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
+        DAOUtilisateur dao = new DAOUtilisateur();
+
+        Utilisateur u1 = new Utilisateur("Jean Dupont", "jean@email.com", "pass123", "CLIENT");
+        Utilisateur u2 = new Utilisateur("Marie Martin", "marie@email.com", "pass456", "ORGANISATEUR");
+
+        dao.ajouter(u1);
+        dao.ajouter(u2);
+
+        ArrayList<Utilisateur> users = dao.lister();
+        for (Utilisateur u : users) {
+            System.out.println(u);
+            dao.supprimer(u);
+        }
+
+        dao.fermerConnexion();
     }
 }
