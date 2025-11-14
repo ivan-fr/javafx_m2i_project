@@ -1,5 +1,6 @@
 package com.project;
 
+import com.project.db.DbConnection;
 import com.project.utilisateur.DAOUtilisateur;
 import com.project.utilisateur.Utilisateur;
 import java.util.ArrayList;
@@ -21,6 +22,6 @@ public class Main {
             dao.supprimer(u);
         }
 
-        dao.fermerConnexion();
+        DbConnection.fermerConnexion();
     }
 }

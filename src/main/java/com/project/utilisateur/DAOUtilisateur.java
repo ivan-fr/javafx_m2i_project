@@ -1,48 +1,20 @@
 package com.project.utilisateur;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import com.project.db.DbConnection;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DAOUtilisateur {
+public class DAOUtilisateur  {
     private Connection conn;
-    private Statement stmt;
 
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String URL = dotenv.get("DB_URL");
-    private static final String USER = dotenv.get("DB_USER");
-    private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
     public DAOUtilisateur() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            stmt = conn.createStatement();
-
-            System.out.println("Connexion établie avec succès!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.conn = DbConnection.getConnection();
     }
 
-    public void fermerConnexion() {
-        try {
-            if (stmt != null && !stmt.isClosed()) {
-                stmt.close();
-            }
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
-            System.out.println("Connexion fermée avec succès!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     // Méthode qui retourne un ArrayList d'objets Utilisateur
     public ArrayList<Utilisateur> lister() {
