@@ -1,4 +1,4 @@
-package com.project.utilisateur;
+package com.project.entity.utilisateur;
 
 import java.sql.Timestamp;
 
