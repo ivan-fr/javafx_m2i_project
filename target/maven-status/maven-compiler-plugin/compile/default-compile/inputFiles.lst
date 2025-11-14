@@ -1,3 +1,10 @@
 /Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/Main.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/db/DbConnection.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/evenement/Concert.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/evenement/Conference.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/evenement/Evenement.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/evenement/Spectacle.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/utilisateur/Client.java
 /Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/utilisateur/DAOUtilisateur.java
+/Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/utilisateur/Organisateur.java
 /Users/ivanbesevic/Documents/java_fx_project/src/main/java/com/project/utilisateur/Utilisateur.java

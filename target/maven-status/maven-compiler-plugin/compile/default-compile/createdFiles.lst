@@ -1,3 +1,10 @@
-com/project/utilisateur/DAOUtilisateur.class
+com/project/evenement/Spectacle.class
 com/project/utilisateur/Utilisateur.class
+com/project/utilisateur/Organisateur.class
 com/project/Main.class
+com/project/db/DbConnection.class
+com/project/evenement/Evenement.class
+com/project/utilisateur/Client.class
+com/project/utilisateur/DAOUtilisateur.class
+com/project/evenement/Concert.class
+com/project/evenement/Conference.class

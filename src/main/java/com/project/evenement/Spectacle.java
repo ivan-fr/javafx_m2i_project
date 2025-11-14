@@ -1,4 +1,4 @@
-package com.projet.evenement;
+package com.project.evenement;
 
 import java.sql.Timestamp;
 public class Spectacle extends Evenement {
