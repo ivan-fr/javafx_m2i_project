@@ -59,3 +59,4 @@ Thumbs.db
 
 # JavaFX specific
 *.fxml~
+.env
