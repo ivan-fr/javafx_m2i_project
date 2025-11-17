@@ -1,7 +1,7 @@
 package com.project.view;
 
 
-import com.project.dao.UtilisateurDAO;
+import com.project.controller.LoginController;
 import com.project.entity.utilisateur.Utilisateur;
 import com.project.entity.utilisateur.Client;
 import com.project.entity.utilisateur.Organisateur;
@@ -52,8 +52,8 @@ public class LoginPage {
                 return;
             }
 
-            UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-            Utilisateur user = utilisateurDAO.login(email, password);
+            LoginController loginController = new LoginController();
+            Utilisateur user = loginController.login(email, password);
             if (user == null) {
                 messageLabel.setText("Email ou mot de passe incorrect !");
                 return;

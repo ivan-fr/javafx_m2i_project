@@ -1,6 +1,6 @@
 package com.project.view;
 
-import com.project.dao.EvenementDAO;
+import com.project.controller.EvenementController;
 import com.project.entity.evenement.Evenement;
 import com.project.entity.utilisateur.Utilisateur;
 import javafx.collections.FXCollections;
@@ -48,8 +48,8 @@ public class EvenementListPage {
         ListView<Evenement> listView = new ListView<>();
 
         // Données brutes depuis la BDD
-        EvenementDAO evenementDAO = new EvenementDAO();
-        List<Evenement> evenements = evenementDAO.listerEvenements();
+        EvenementController evenementController = new EvenementController();
+        List<Evenement> evenements = evenementController.getAllEvenements();
         ObservableList<Evenement> masterData = FXCollections.observableArrayList(evenements);
 
         // Filtrage

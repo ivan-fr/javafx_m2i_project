@@ -1,7 +1,7 @@
 package com.project.view;
 
 import com.project.entity.evenement.*;
-import com.project.dao.EvenementDAO;
+import com.project.controller.EvenementController;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -123,13 +123,18 @@ public class CreateEventPage {
             evt.getCategories().add(standard);
             evt.getCategories().add(vip);
 
-            // 🔥 ajouterEvenement va sauvegarder l'événement ET ses catégories
-            EvenementDAO evenementDAO = new EvenementDAO();
-            evenementDAO.ajouterEvenement(evt);
-            System.out.println("ID even inserted = " + evt.getId());
+            // 🔥 Créer l'événement via le controller
+            EvenementController controller = new EvenementController();
+            boolean success = controller.createEvenement(evt);
 
-            message.setStyle("-fx-text-fill: green;");
-            message.setText("Événement créé avec succès !");
+            if (success) {
+                System.out.println("ID even inserted = " + evt.getId());
+                message.setStyle("-fx-text-fill: green;");
+                message.setText("Événement créé avec succès !");
+            } else {
+                message.setStyle("-fx-text-fill: red;");
+                message.setText("Erreur lors de la création de l'événement.");
+            }
         });
 
         return new Scene(grid, 600, 500);
