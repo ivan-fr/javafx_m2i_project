@@ -5,7 +5,6 @@ import com.project.entity.utilisateur.Utilisateur;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -26,14 +25,10 @@ public class EvenementDetailPage {
         Button btnReserver = new Button("Réserver");
         btnReserver.setPrefWidth(140);
         btnReserver.setOnAction(e -> {
-            // 👉 Ici tu mettras ta logique réelle de réservation
-            // (insertion en BDD, ouverture d'une fenêtre, etc.)
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Réservation");
-            alert.setHeaderText("Réservation effectuée");
-            alert.setContentText("Vous avez réservé une place pour : " + evenement.getNom());
-            alert.showAndWait();
+            // Ouvrir le formulaire de réservation
+            ReservationForm reservationForm = new ReservationForm();
+            Scene reservationScene = reservationForm.getScene(stage, evenement);
+            stage.setScene(reservationScene);
         });
 
         // ---- Bouton Retour ----

@@ -13,17 +13,19 @@ public abstract class Evenement {
     private int organisateurId;
     private List<CategoryPlace> categories = new ArrayList<>();
 
-    public Evenement(String nom, LocalDateTime date, String lieu) {
+    public Evenement(String nom, LocalDateTime date, String lieu, int organisateurId) {
         this.nom = nom;
         this.date = date;
         this.lieu = lieu;
+        this.organisateurId = organisateurId;
     }
 
-    public Evenement(int id, String nom, LocalDateTime date, String lieu) {
+    public Evenement(int id, String nom, LocalDateTime date, String lieu, int organisateurId) {
         this.id = id;
         this.nom = nom;
         this.date = date;
         this.lieu = lieu;
+        this.organisateurId = organisateurId;
     }
 
     public int getId() {

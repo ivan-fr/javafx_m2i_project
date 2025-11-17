@@ -2,7 +2,6 @@ package com.project.view;
 
 import com.project.entity.evenement.*;
 import com.project.dao.EvenementDAO;
-import com.project.dao.CategoryPlaceDAO;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class CreateEventPage {
@@ -110,13 +108,11 @@ public class CreateEventPage {
                 return;
             }
 
-            Timestamp ts = Timestamp.valueOf(date.atStartOfDay());
-
             // 🔥 Création de l'événement
             Evenement evt = switch (type) {
-                case "CONCERT" -> new Concert(nom, ts, lieu, organisateurId);
-                case "SPECTACLE" -> new Spectacle(nom, ts, lieu, organisateurId);
-                case "CONFERENCE" -> new Conference(nom, ts, lieu, organisateurId);
+                case "CONCERT" -> new Concert(nom, date.atStartOfDay(), lieu, organisateurId);
+                case "SPECTACLE" -> new Spectacle(nom, date.atStartOfDay(), lieu, organisateurId);
+                case "CONFERENCE" -> new Conference(nom, date.atStartOfDay(), lieu, organisateurId);
                 default -> null;
             };
 

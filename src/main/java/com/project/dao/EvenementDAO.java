@@ -19,7 +19,7 @@ public class EvenementDAO {
             String type = evenement.getClass().getSimpleName().toUpperCase();
 
             preparedStatement.setString(1, evenement.getNom());
-            preparedStatement.setTimestamp(2, evenement.getDate());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(evenement.getDate()));
             preparedStatement.setString(3, evenement.getLieu());
             preparedStatement.setString(4, type);
             preparedStatement.setInt(5, evenement.getOrganisateurId());
@@ -49,7 +49,7 @@ public class EvenementDAO {
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, evt.getNom());
-            pstmt.setTimestamp(2, evt.getDate());
+            pstmt.setTimestamp(2, Timestamp.valueOf(evt.getDate()));
             pstmt.setString(3, evt.getLieu());
             pstmt.setInt(4, evt.getOrganisateurId());
             pstmt.setInt(5, evt.getId());
@@ -119,19 +119,19 @@ public class EvenementDAO {
 
         int id = rs.getInt("id");
         String nom = rs.getString("nom");
-        Timestamp date = rs.getTimestamp("date");
+        Timestamp timestamp = rs.getTimestamp("date");
         String lieu = rs.getString("lieu");
         int organisateurId = rs.getInt("organisateur_id");
 
         switch (type.toUpperCase()) {
             case "CONCERT":
-                return new Concert(id, nom, date, lieu, organisateurId);
+                return new Concert(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
 
             case "SPECTACLE":
-                return new Spectacle(id, nom, date, lieu, organisateurId);
+                return new Spectacle(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
 
             case "CONFERENCE":
-                return new Conference(id, nom, date, lieu, organisateurId);
+                return new Conference(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
 
             default:
                 throw new Exception("Type d'événement inconnu : " + type);
@@ -151,17 +151,17 @@ public class EvenementDAO {
 
             while (resultSet.next()) {
                 String nom = resultSet.getString("nom");
-                Timestamp date = resultSet.getTimestamp("date");
+                Timestamp timestamp = resultSet.getTimestamp("date");
                 String lieu = resultSet.getString("lieu");
                 String type = resultSet.getString("type_evenement");
                 int idEvenement = resultSet.getInt("id");
                 int organisateurId = resultSet.getInt("organisateur_id");
-                
-                
+
+
                 Evenement evenement = switch (type.toUpperCase()) {
-                case "CONCERT" -> new Concert(nom, date, lieu, organisateurId);
-                case "SPECTACLE" -> new Spectacle(nom, date, lieu, organisateurId);
-                case "CONFERENCE" -> new Conference(nom, date, lieu, organisateurId);
+                case "CONCERT" -> new Concert(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+                case "SPECTACLE" -> new Spectacle(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+                case "CONFERENCE" -> new Conference(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
                 default -> throw new IllegalArgumentException("Type inconnu : " + type);
             };
 
