@@ -106,7 +106,7 @@ public abstract class Evenement {
     @Override
     public String toString() {
         // Texte qui sera affiché dans la ListView
-        return nom + " - " + date.toLocalDate() + " - " + lieu;
+        return nom + " - " + date.toLocalDateTime().toLocalDate() + " - " + lieu;
     }
 
 }
