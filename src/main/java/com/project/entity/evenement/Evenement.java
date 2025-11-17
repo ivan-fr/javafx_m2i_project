@@ -1,22 +1,26 @@
 package com.project.entity.evenement;
 
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 
 public abstract class Evenement {
-    private int id; // id en BDD
+    private int id; 
     private String nom;
-    private LocalDateTime date;
+    private Timestamp date;
     private String lieu;
-    private int organisateurId; // FK vers utilisateurs (ORGANISATEUR)
+    private int organisateurId; 
     private List<CategoryPlace> categories = new ArrayList<>();
 
-    public Evenement(String nom, LocalDateTime date, String lieu) {
+    public Evenement(int id, String nom, Timestamp date, String lieu, int organisateurId) {
+        this.id = id;
         this.nom = nom;
         this.date = date;
         this.lieu = lieu;
+        this.organisateurId = organisateurId;
     }
 
     public int getId() {
@@ -35,11 +39,11 @@ public abstract class Evenement {
         this.nom = nom;
     }
 
-    public LocalDateTime getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -74,6 +78,30 @@ public abstract class Evenement {
     public CategoryPlace getCategorieParNom(String nom) {
         return categories.stream().filter(c -> c.getCategorie().equals(nom)).findFirst().orElse(null);
     }
+    
+    private Evenement creerEvenementDepuisResultSet(ResultSet rs, String type) throws Exception {
+
+        int id = rs.getInt("id");
+        String nom = rs.getString("nom");
+        Timestamp date = rs.getTimestamp("date_evenement");
+        String lieu = rs.getString("lieu");
+        int organisateurId = rs.getInt("organisateur_id");
+
+        switch (type.toUpperCase()) {
+            case "CONCERT":
+                return new Concert(id, nom, date, lieu, organisateurId);
+
+            case "SPECTACLE":
+                return new Spectacle(id, nom, date, lieu, organisateurId);
+
+            case "CONFERENCE":
+                return new Conference(id, nom, date, lieu, organisateurId);
+
+            default:
+                throw new Exception("Type d'événement inconnu : " + type);
+        }
+    }
+
 
 }
 

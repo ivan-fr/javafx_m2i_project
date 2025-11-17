@@ -3,6 +3,8 @@ package com.project.view;
 
 import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Utilisateur;
+import com.project.entity.utilisateur.Client;
+import com.project.entity.utilisateur.Organisateur;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -42,6 +44,7 @@ public class LoginPage {
         btnLogin.setOnAction(e -> {
             String email = emailField.getText();
             String password = pwdField.getText();
+            
 
             if (email.isEmpty() || password.isEmpty()) {
                 messageLabel.setText("Veuillez remplir tous les champs !");
@@ -49,11 +52,26 @@ public class LoginPage {
             }
 
             Utilisateur user = UtilisateurDAO.login(email, password);
-            if (user != null) {
-                messageLabel.setText("Connexion réussie ! Bienvenue " + user.getNom());
-                // TODO : ouvrir Dashboard Client ou Organisateur selon type
-            } else {
+            if (user == null) {
                 messageLabel.setText("Email ou mot de passe incorrect !");
+                return;
+            }
+            
+            messageLabel.setText("Connexion réussie !");
+
+            // Rediréction selon le type de l'utilisateur
+            if (user instanceof Organisateur organisateur) {
+                // Page de création d'événement
+                Scene sceneEvent = CreateEventPage.getScene(stage, organisateur.getId());
+                stage.setScene(sceneEvent);
+                stage.show();
+                return;
+            }
+
+            if (user instanceof Client client) {
+                // TODO: Page client
+                messageLabel.setText("Bienvenue client : " + client.getNom());
+                return;
             }
         });
 
