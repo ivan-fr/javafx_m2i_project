@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 public class EvenementDAO {
 
-    public static void ajouterEvenement(Evenement evenement) {
+    public void ajouterEvenement(Evenement evenement) {
         String sql = "INSERT INTO evenements (nom,date,lieu,type_evenement,organisateur_id) VALUES (?,?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,9 +31,10 @@ public class EvenementDAO {
                 evenement.setId(idEvenement);
 
                 // Ajouter les catégories via CategoryPlaceDAO
+                CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
                 for (CategoryPlace categoryPlace : evenement.getCategories()) {
                     categoryPlace.setEvenementId(idEvenement);
-                    CategoryPlaceDAO.ajouterCategoryPlace(categoryPlace);
+                    categoryPlaceDAO.ajouterCategoryPlace(categoryPlace);
                 }
             }
 
@@ -101,7 +102,8 @@ public class EvenementDAO {
                 Evenement evt = creerEvenementDepuisResultSet(rs, type);
 
                 // Charger catégories
-                evt.setCategories(CategoryPlaceDAO.getCategoryPlacesParEvenement(evt));
+                CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
+                evt.setCategories(categoryPlaceDAO.getCategoryPlacesParEvenement(evt));
 
                 return evt;
             }
@@ -123,26 +125,22 @@ public class EvenementDAO {
         String lieu = rs.getString("lieu");
         int organisateurId = rs.getInt("organisateur_id");
 
-        switch (type.toUpperCase()) {
-            case "CONCERT":
-                return new Concert(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+        Evenement evenement = switch (type.toUpperCase()) {
+            case "CONCERT" -> new Concert(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+            case "SPECTACLE" -> new Spectacle(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+            case "CONFERENCE" -> new Conference(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+            default -> throw new Exception("Type d'événement inconnu : " + type);
+        };
 
-            case "SPECTACLE":
-                return new Spectacle(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-
-            case "CONFERENCE":
-                return new Conference(id, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-
-            default:
-                throw new Exception("Type d'événement inconnu : " + type);
-        }
+        evenement.setId(id);
+        return evenement;
     }
 
 
 
     
     
-    public static List<Evenement> listerEvenements() {
+    public List<Evenement> listerEvenements() {
         List<Evenement> liste = new ArrayList<>();
         String sql = "SELECT * FROM evenements ORDER BY date";
         try (Connection conn = DbConnection.getConnection();
@@ -168,7 +166,8 @@ public class EvenementDAO {
                 if (evenement != null) {
                     evenement.setId(idEvenement);
                     evenement.setOrganisateurId(organisateurId);
-                    evenement.getCategories().addAll(CategoryPlaceDAO.getCategoryPlacesParEvenement(evenement));
+                    CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
+                    evenement.getCategories().addAll(categoryPlaceDAO.getCategoryPlacesParEvenement(evenement));
                     liste.add(evenement);
                 }
             }

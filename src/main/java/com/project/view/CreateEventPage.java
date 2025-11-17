@@ -124,7 +124,8 @@ public class CreateEventPage {
             evt.getCategories().add(vip);
 
             // 🔥 ajouterEvenement va sauvegarder l'événement ET ses catégories
-            EvenementDAO.ajouterEvenement(evt);
+            EvenementDAO evenementDAO = new EvenementDAO();
+            evenementDAO.ajouterEvenement(evt);
             System.out.println("ID even inserted = " + evt.getId());
 
             message.setStyle("-fx-text-fill: green;");

@@ -7,10 +7,6 @@ public class Organisateur extends Utilisateur {
         this.setTypeCompte("ORGANISATEUR");
     }
 
-    public Organisateur(int id, String nom, String email, String motDePasse) {
-        super(id, nom, email, motDePasse, "ORGANISATEUR", null);
-    }
-
     public Organisateur(String nom, String email, String motDePasse) {
         super(nom, email, motDePasse, "ORGANISATEUR");
     }

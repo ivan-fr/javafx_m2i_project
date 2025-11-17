@@ -48,7 +48,8 @@ public class EvenementListPage {
         ListView<Evenement> listView = new ListView<>();
 
         // Données brutes depuis la BDD
-        List<Evenement> evenements = EvenementDAO.listerEvenements();
+        EvenementDAO evenementDAO = new EvenementDAO();
+        List<Evenement> evenements = evenementDAO.listerEvenements();
         ObservableList<Evenement> masterData = FXCollections.observableArrayList(evenements);
 
         // Filtrage

@@ -32,19 +32,18 @@ public class UtilisateurDAO {
                 String type = resultSet.getString("type_compte");
                 if (type.equalsIgnoreCase("CLIENT")) {
                     utilisateur = new Client(
-                        resultSet.getInt("id"),
                         resultSet.getString("nom"),
                         resultSet.getString("email"),
                         resultSet.getString("mot_de_passe")
                     );
                 } else {
                     utilisateur = new Organisateur(
-                        resultSet.getInt("id"),
                         resultSet.getString("nom"),
                         resultSet.getString("email"),
                         resultSet.getString("mot_de_passe")
                     );
                 }
+                utilisateur.setId(resultSet.getInt("id"));
                 utilisateur.setDateCreation(resultSet.getTimestamp("date_creation"));
 
                 listeUtilisateurs.add(utilisateur);
@@ -77,7 +76,7 @@ public class UtilisateurDAO {
         }
     }
 
-    public static Utilisateur login(String email, String motDePasse) {
+    public Utilisateur login(String email, String motDePasse) {
         String sql = "SELECT * FROM utilisateurs WHERE email=? AND mot_de_passe=?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql)) {

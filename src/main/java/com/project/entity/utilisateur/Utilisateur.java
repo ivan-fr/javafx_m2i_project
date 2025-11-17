@@ -14,17 +14,7 @@ public class Utilisateur {
     public Utilisateur() {
     }
 
-    // Constructeur avec tous les paramètres
-    public Utilisateur(int id, String nom, String email, String motDePasse, String typeCompte, Timestamp dateCreation) {
-        this.id = id;
-        this.nom = nom;
-        this.email = email;
-        this.motDePasse = motDePasse;
-        this.typeCompte = typeCompte;
-        this.dateCreation = dateCreation;
-    }
-
-    // Constructeur sans ID et date (pour les insertions avec auto-increment)
+    // Constructeur sans ID (ID auto-généré par la BDD)
     public Utilisateur(String nom, String email, String motDePasse, String typeCompte) {
         this.nom = nom;
         this.email = email;

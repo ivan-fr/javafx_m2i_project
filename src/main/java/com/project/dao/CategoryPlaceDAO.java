@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CategoryPlaceDAO {
 
-	public static void ajouterCategoryPlace(CategoryPlace categoryPlace) {
+	public void ajouterCategoryPlace(CategoryPlace categoryPlace) {
 	    String sql = "INSERT INTO category_places (evenement_id, categorie, nb_places, prix) VALUES (?,?,?,?)";
 	    try (Connection conn = DbConnection.getConnection();
 	         PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,7 +31,7 @@ public class CategoryPlaceDAO {
 	}
 
 
-    public static List<CategoryPlace> getCategoryPlacesParEvenement(com.project.entity.evenement.Evenement evenement) {
+    public List<CategoryPlace> getCategoryPlacesParEvenement(com.project.entity.evenement.Evenement evenement) {
         List<CategoryPlace> liste = new ArrayList<>();
         String sql = "SELECT * FROM category_places WHERE evenement_id=?";
         try (Connection conn = DbConnection.getConnection();
@@ -54,7 +54,7 @@ public class CategoryPlaceDAO {
         return liste;
     }
 
-    public static void updateCategoryPlace(CategoryPlace categoryPlace) {
+    public void updateCategoryPlace(CategoryPlace categoryPlace) {
         String sql = "UPDATE category_places SET nb_places=?, prix=? WHERE id=?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
@@ -71,7 +71,7 @@ public class CategoryPlaceDAO {
      * Calcule le nombre de places disponibles pour une category_place
      * Formule : nb_places - nombre de réservations
      */
-    public static int getPlacesDisponibles(CategoryPlace categoryPlace) {
+    public int getPlacesDisponibles(CategoryPlace categoryPlace) {
         String sql = "SELECT cp.nb_places - COUNT(r.id) AS places_disponibles " +
                      "FROM category_places cp " +
                      "LEFT JOIN reservations r ON cp.id = r.category_place_id " +

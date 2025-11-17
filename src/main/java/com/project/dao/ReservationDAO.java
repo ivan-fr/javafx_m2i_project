@@ -28,7 +28,8 @@ public class ReservationDAO {
         // Créer un objet CategoryPlace temporaire avec l'ID pour la vérification
         CategoryPlace categoryPlace = new CategoryPlace("", 0, 0.0);
         categoryPlace.setId(reservation.getCategoryPlaceId());
-        int placesDisponibles = CategoryPlaceDAO.getPlacesDisponibles(categoryPlace);
+        CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
+        int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryPlace);
         if (placesDisponibles <= 0) {
             System.out.println("Erreur : Plus de places disponibles pour cette catégorie");
             return false;

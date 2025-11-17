@@ -52,7 +52,8 @@ public class LoginPage {
                 return;
             }
 
-            Utilisateur user = UtilisateurDAO.login(email, password);
+            UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+            Utilisateur user = utilisateurDAO.login(email, password);
             if (user == null) {
                 messageLabel.setText("Email ou mot de passe incorrect !");
                 return;

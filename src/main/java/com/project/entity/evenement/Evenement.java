@@ -20,14 +20,6 @@ public abstract class Evenement {
         this.organisateurId = organisateurId;
     }
 
-    public Evenement(int id, String nom, LocalDateTime date, String lieu, int organisateurId) {
-        this.id = id;
-        this.nom = nom;
-        this.date = date;
-        this.lieu = lieu;
-        this.organisateurId = organisateurId;
-    }
-
     public int getId() {
         return id;
     }
