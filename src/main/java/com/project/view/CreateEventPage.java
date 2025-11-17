@@ -2,6 +2,7 @@ package com.project.view;
 
 import com.project.entity.evenement.*;
 import com.project.controller.EvenementController;
+import com.project.util.Session;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 
 public class CreateEventPage {
 
-    public static Scene getScene(Stage stage, int organisateurId) {
+    public static Scene getScene(Stage stage) {
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -109,6 +110,7 @@ public class CreateEventPage {
             }
 
             // 🔥 Création de l'événement
+            int organisateurId = Session.getInstance().getUtilisateur().getId();
             Evenement evt = switch (type) {
                 case "CONCERT" -> new Concert(nom, date.atStartOfDay(), lieu, organisateurId);
                 case "SPECTACLE" -> new Spectacle(nom, date.atStartOfDay(), lieu, organisateurId);

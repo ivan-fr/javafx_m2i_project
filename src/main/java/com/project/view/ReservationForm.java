@@ -1,6 +1,5 @@
 package com.project.view;
 
-import com.project.Main;
 import com.project.controller.ReservationController;
 
 import com.project.entity.evenement.CategoryPlace;
@@ -78,7 +77,7 @@ public class ReservationForm {
         }
 
         int selectedCategoryId = categoryMap.get(selectedCategory);
-        boolean result = controller.reserve(Session.getUtilisateur().getId(), event.getId(), selectedCategoryId, quantity);
+        boolean result = controller.reserve(Session.getInstance().getUtilisateur().getId(), event.getId(), selectedCategoryId, quantity);
 
         messageLabel.setText(result ? "Reservation successful!" : "Reservation failed.");
     }

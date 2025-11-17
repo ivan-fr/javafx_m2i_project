@@ -60,21 +60,21 @@ public class LoginPage {
             }
 
             // Sauvegarder l'utilisateur dans la session
-            Session.setUtilisateur(user);
+            Session.getInstance().setUtilisateur(user);
             messageLabel.setText("Connexion réussie !");
 
             // Rediréction selon le type de l'utilisateur
-            if (user instanceof Organisateur organisateur) {
+            if (user instanceof Organisateur) {
                 // Page de création d'événement
-                Scene sceneEvent = CreateEventPage.getScene(stage, organisateur.getId());
+                Scene sceneEvent = CreateEventPage.getScene(stage);
                 stage.setScene(sceneEvent);
                 stage.show();
                 return;
             }
 
-            if (user instanceof Client client) {
+            if (user instanceof Client) {
                 // Redirection vers la page liste des événements
-                Scene eventListScene = EvenementListPage.getScene(stage, user);
+                Scene eventListScene = EvenementListPage.getScene(stage);
                 stage.setScene(eventListScene);
                 return;
             }

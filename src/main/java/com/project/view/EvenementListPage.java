@@ -2,7 +2,7 @@ package com.project.view;
 
 import com.project.controller.EvenementController;
 import com.project.entity.evenement.Evenement;
-import com.project.entity.utilisateur.Utilisateur;
+import com.project.util.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -21,10 +21,10 @@ import java.util.List;
 
 public class EvenementListPage {
 
-    public static Scene getScene(Stage stage, Utilisateur user) {
+    public static Scene getScene(Stage stage) {
 
         // --- Titre ---
-        Label welcomeLabel = new Label("Bonjour " + user.getNom() + " - Liste des événements");
+        Label welcomeLabel = new Label("Bonjour " + Session.getInstance().getUtilisateur().getNom() + " - Liste des événements");
 
         // --- Filtres ---
         // Filtre type d'événement
@@ -75,7 +75,7 @@ public class EvenementListPage {
             if (event.getClickCount() == 2) {
                 Evenement selected = listView.getSelectionModel().getSelectedItem();
                 if (selected != null) {
-                    Scene detailScene = EvenementDetailPage.getScene(stage, user, selected);
+                    Scene detailScene = EvenementDetailPage.getScene(stage, selected);
                     stage.setScene(detailScene);
                 }
             }
