@@ -12,10 +12,12 @@ import java.util.List;
 
 public class EvenementDAO {
 
-    public static void ajouterEvenement(Evenement evenement, String type) {
+    public static void ajouterEvenement(Evenement evenement) {
         String sql = "INSERT INTO evenements (nom,date,lieu,type_evenement,organisateur_id) VALUES (?,?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            String type = evenement.getClass().getSimpleName().toUpperCase();
 
             preparedStatement.setString(1, evenement.getNom());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(evenement.getDate()));
