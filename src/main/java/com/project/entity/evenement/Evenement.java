@@ -75,7 +75,14 @@ public abstract class Evenement {
         return categories.stream().filter(c -> c.getCategorie().equals(nom)).findFirst().orElse(null);
     }
 
+    @Override
+    public String toString() {
+        // Texte qui sera affiché dans la ListView
+        return nom + " - " + date.toLocalDate() + " - " + lieu;
+    }
+
 }
+
 
 
 

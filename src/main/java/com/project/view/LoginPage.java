@@ -50,11 +50,14 @@ public class LoginPage {
 
             Utilisateur user = UtilisateurDAO.login(email, password);
             if (user != null) {
-                messageLabel.setText("Connexion réussie ! Bienvenue " + user.getNom());
-                // TODO : ouvrir Dashboard Client ou Organisateur selon type
+                // Redirection vers la page LISTE des événements
+                Scene eventListScene = EvenementListPage.getScene(stage, user);
+                stage.setScene(eventListScene);
             } else {
                 messageLabel.setText("Email ou mot de passe incorrect !");
             }
+
+
         });
 
         // Bouton création compte
