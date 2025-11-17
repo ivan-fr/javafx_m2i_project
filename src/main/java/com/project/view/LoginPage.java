@@ -3,6 +3,7 @@ package com.project.view;
 
 import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Utilisateur;
+import com.project.util.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -50,6 +51,7 @@ public class LoginPage {
 
             Utilisateur user = UtilisateurDAO.login(email, password);
             if (user != null) {
+                Session.setUtilisateur(user);
                 messageLabel.setText("Connexion réussie ! Bienvenue " + user.getNom());
                 // TODO : ouvrir Dashboard Client ou Organisateur selon type
             } else {

@@ -19,6 +19,13 @@ public abstract class Evenement {
         this.lieu = lieu;
     }
 
+    public Evenement(int id,String nom, LocalDateTime date, String lieu) {
+        this.id= id;
+        this.nom = nom;
+        this.date = date;
+        this.lieu = lieu;
+    }
+
     public int getId() {
         return id;
     }
