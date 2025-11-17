@@ -120,20 +120,16 @@ public class CreateEventPage {
                 default -> null;
             };
 
-            EvenementDAO.ajouterEvenement(evt);
-            System.out.println("ID even inserted = " + evt.getId());
-
-            int eventId = evt.getId(); 
-
-            // 🔥 Une seule création, une seule insertion ! 
+            // 🔥 Créer les catégories et les ajouter à l'événement AVANT de sauvegarder
             CategoryPlace standard = new CategoryPlace("STANDARD", placesStandard, prixStandard);
-            standard.setEvenementId(eventId);
-
             CategoryPlace vip = new CategoryPlace("VIP", placesVip, prixVip);
-            vip.setEvenementId(eventId);
 
             evt.getCategories().add(standard);
             evt.getCategories().add(vip);
+
+            // 🔥 ajouterEvenement va sauvegarder l'événement ET ses catégories
+            EvenementDAO.ajouterEvenement(evt);
+            System.out.println("ID even inserted = " + evt.getId());
 
             message.setStyle("-fx-text-fill: green;");
             message.setText("Événement créé avec succès !");
