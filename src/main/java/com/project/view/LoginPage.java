@@ -56,7 +56,7 @@ public class LoginPage {
                 messageLabel.setText("Email ou mot de passe incorrect !");
                 return;
             }
-            
+
             messageLabel.setText("Connexion réussie !");
 
             // Rediréction selon le type de l'utilisateur
@@ -69,10 +69,13 @@ public class LoginPage {
             }
 
             if (user instanceof Client client) {
-                // TODO: Page client
-                messageLabel.setText("Bienvenue client : " + client.getNom());
+                // Redirection vers la page liste des événements
+                Scene eventListScene = EvenementListPage.getScene(stage, user);
+                stage.setScene(eventListScene);
                 return;
             }
+
+
         });
 
         // Bouton création compte

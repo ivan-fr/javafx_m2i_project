@@ -1,7 +1,5 @@
 package com.project.dao;
 
-
-
 import com.project.util.DbConnection;
 import com.project.entity.evenement.*;
 
@@ -146,7 +144,7 @@ public class EvenementDAO {
     
     public static List<Evenement> listerEvenements() {
         List<Evenement> liste = new ArrayList<>();
-        String sql = "SELECT * FROM evenements";
+        String sql = "SELECT * FROM evenements ORDER BY date";
         try (Connection conn = DbConnection.getConnection();
              Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
