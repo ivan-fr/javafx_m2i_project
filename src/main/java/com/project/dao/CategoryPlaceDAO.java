@@ -9,26 +9,27 @@ import java.util.List;
 
 public class CategoryPlaceDAO {
 
-    public static void ajouterCategoryPlace(CategoryPlace categoryPlace) {
-        String sql = "INSERT INTO category_places (evenement_id,categorie,nb_places,prix) VALUES (?,?,?,?)";
-        try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	public static void ajouterCategoryPlace(CategoryPlace categoryPlace) {
+	    String sql = "INSERT INTO category_places (evenement_id, categorie, nb_places, prix) VALUES (?,?,?,?)";
+	    try (Connection conn = DbConnection.getConnection();
+	         PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setInt(1, categoryPlace.getEvenementId());
-            preparedStatement.setString(2, categoryPlace.getCategorie());
-            preparedStatement.setInt(3, categoryPlace.getNbPlaces());
-            preparedStatement.setDouble(4, categoryPlace.getPrix());
-            preparedStatement.executeUpdate();
+	        preparedStatement.setInt(1, categoryPlace.getEvenementId());
+	        preparedStatement.setString(2, categoryPlace.getCategorie());
+	        preparedStatement.setInt(3, categoryPlace.getNbPlaces());
+	        preparedStatement.setDouble(4, categoryPlace.getPrix());
+	        preparedStatement.executeUpdate();
 
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                categoryPlace.setId(resultSet.getInt(1));
-            }
+	        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+	        if (resultSet.next()) {
+	            categoryPlace.setId(resultSet.getInt(1));
+	        }
 
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+	    } catch (SQLException exception) {
+	        exception.printStackTrace();
+	    }
+	}
+
 
     public static List<CategoryPlace> getCategoryPlacesParEvenement(com.project.entity.evenement.Evenement evenement) {
         List<CategoryPlace> liste = new ArrayList<>();
@@ -88,4 +89,18 @@ public class CategoryPlaceDAO {
         }
         return 0;
     }
+    
+    public void supprimerCategoryPlacesParEvenement(int evenementId) {
+        try {
+            String sql = "DELETE FROM category_places WHERE evenement_id = ?";
+            Connection conn = DbConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, evenementId);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

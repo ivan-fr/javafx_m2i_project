@@ -85,16 +85,29 @@ public class UtilisateurDAO {
             preparedStatement.setString(2, motDePasse);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String nom = resultSet.getString("nom");
-                String type = resultSet.getString("type_compte");
-                if (type.equals("CLIENT")) return new Client(nom, email, motDePasse);
-                else return new Organisateur(nom, email, motDePasse);
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+            	String type = resultSet.getString("type_compte");
+
+                Utilisateur user;
+                if (type.equals("ORGANISATEUR")) {
+                    user = new Organisateur();
+                } else {
+                    user = new Client();
+                }
+
+                user.setId(resultSet.getInt("id"));                      //  ⛔ tu as oublié ça !
+                user.setNom(resultSet.getString("nom"));
+                user.setEmail(resultSet.getString("email"));
+                user.setMotDePasse(resultSet.getString("mot_de_passe"));
+                user.setTypeCompte(type);
+
+                return user;
         }
         return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
     }
+}
     // Supprimer un utilisateur avec un objet Utilisateur
     public void supprimer(Utilisateur utilisateur) {
         try {

@@ -1,10 +1,14 @@
 package com.project.entity.evenement;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Spectacle extends Evenement {
-    public Spectacle(String nom, LocalDateTime date, String lieu) {
-        super(nom,date,lieu);
-    }
+	 public Spectacle(int id, String nom, Timestamp dateEvenement, String lieu, int organisisateurId) {
+	        super(id, nom, dateEvenement, lieu, organisisateurId);
+	    }
+
+	    public Spectacle(String nom, Timestamp dateEvenement, String lieu, int organisisateurId) {
+	        super(0, nom, dateEvenement, lieu, organisisateurId);
+	    }
 
 }
