@@ -3,7 +3,6 @@ package com.project.view;
 
 import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Utilisateur;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,16 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LoginPage extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Connexion - Plateforme Réservation");
-        Scene scene = getScene(primaryStage);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
+public class LoginPage {
     public static Scene getScene(Stage stage) {
         // GridPane pour layout
         GridPane grid = new GridPane();
@@ -76,9 +66,5 @@ public class LoginPage extends Application {
         });
 
         return new Scene(grid, 400, 300);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
