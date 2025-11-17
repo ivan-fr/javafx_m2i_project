@@ -9,30 +9,11 @@ import java.time.LocalDateTime;
 
 public class ReservationDAO {
 
-    /**
-     * Vérifie si un client a déjà réservé pour un événement
-     * Règle : un client = 1 réservation max par événement
-     */
-    public static boolean clientADejaReserve(Reservation reservation) {
-        String sql = "SELECT COUNT(*) AS nb FROM reservations WHERE client_id = ? AND evenement_id = ?";
-        try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setInt(1, reservation.getClientId());
-            preparedStatement.setInt(2, reservation.getEvenementId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("nb") > 0;
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return false;
-    }
 
     /**
-     * Ajoute une réservation avec vérifications :
-     * 1. Le client n'a pas déjà réservé pour cet événement
-     * 2. Il reste des places disponibles pour cette category_place
+     * Ajoute une réservation avec vérification :
+     * - Il reste des places disponibles pour cette category_place
+     * Un client peut réserver plusieurs catégories de places pour un même événement
      *
      * @param reservation La réservation à ajouter (doit contenir clientId, evenementId, categoryPlaceId)
      * @return true si la réservation a été ajoutée, false sinon
@@ -43,13 +24,7 @@ public class ReservationDAO {
             reservation.setDateReservation(LocalDateTime.now());
         }
 
-        // Vérification 1 : Le client a-t-il déjà réservé pour cet événement ?
-        if (clientADejaReserve(reservation)) {
-            System.out.println("Erreur : Ce client a déjà réservé pour cet événement");
-            return false;
-        }
-
-        // Vérification 2 : Y a-t-il encore des places disponibles ?
+        // Vérification : Y a-t-il encore des places disponibles ?
         // Créer un objet CategoryPlace temporaire avec l'ID pour la vérification
         CategoryPlace categoryPlace = new CategoryPlace("", 0, 0.0);
         categoryPlace.setId(reservation.getCategoryPlaceId());
