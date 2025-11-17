@@ -18,7 +18,7 @@ public class ReservationDAO {
      * @param reservation La réservation à ajouter (doit contenir clientId, evenementId, categoryPlaceId)
      * @return true si la réservation a été ajoutée, false sinon
      */
-    public static boolean ajouterReservation(Reservation reservation) {
+    public  boolean ajouterReservation(Reservation reservation) {
         // Définir la date de réservation si elle n'est pas déjà définie
         if (reservation.getDateReservation() == null) {
             reservation.setDateReservation(LocalDateTime.now());

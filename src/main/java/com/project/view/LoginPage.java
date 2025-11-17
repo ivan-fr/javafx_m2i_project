@@ -5,6 +5,7 @@ import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Utilisateur;
 import com.project.entity.utilisateur.Client;
 import com.project.entity.utilisateur.Organisateur;
+import com.project.util.Session;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -57,6 +58,8 @@ public class LoginPage {
                 return;
             }
 
+            // Sauvegarder l'utilisateur dans la session
+            Session.setUtilisateur(user);
             messageLabel.setText("Connexion réussie !");
 
             // Rediréction selon le type de l'utilisateur
