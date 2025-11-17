@@ -8,6 +8,14 @@ public class Reservation {
     private int evenementId; // FK vers evenements
     private int categoryPlaceId; // FK vers category_places
     private LocalDateTime dateReservation;
+    
+    private String evenementNom;
+    private LocalDateTime evenementDate;
+    private String categorie;
+    private int nombrePlaces; 
+    private double prixUnitaire;
+    private double prixTotal;
+
 
     public Reservation() {
     }
@@ -58,4 +66,48 @@ public class Reservation {
     public void setDateReservation(LocalDateTime dateReservation) {
         this.dateReservation = dateReservation;
     }
+    
+    public String getEvenementNom() { 
+    	return evenementNom; 
+    	}
+    public void setEvenementNom(String evenementNom) {
+    	this.evenementNom = evenementNom; 
+    	}
+    
+
+    public LocalDateTime getEvenementDate() {
+    	return evenementDate; 
+    	}
+    public void setEvenementDate(LocalDateTime evenementDate) {
+    	this.evenementDate = evenementDate; 
+    	}
+
+    public String getCategorie() { 
+    	return categorie; 
+    	}
+    public void setCategorie(String categorie) {
+    	this.categorie = categorie; 
+    	}
+
+    
+    public int getNombrePlaces() {
+    	return nombrePlaces; 
+    	}
+    public void setNombrePlaces(int nombrePlaces) {
+    	this.nombrePlaces = nombrePlaces; 
+    	}
+
+    public double getPrixUnitaire() {
+    	return prixUnitaire; 
+    	}
+    public void setPrixUnitaire(double prixUnitaire) {
+    	this.prixUnitaire = prixUnitaire; 
+    	}
+
+    public double getPrixTotal() {
+    	return prixTotal; 
+    	}
+    public void setPrixTotal(double prixTotal) {
+    	this.prixTotal = prixTotal; 
+    	}
 }

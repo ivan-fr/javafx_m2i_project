@@ -43,11 +43,19 @@ public class EvenementListPage {
 
         VBox topBox = new VBox(10, welcomeLabel, filterBox);
         topBox.setPadding(new Insets(10));
+        
+        Button btnHisotrique = new Button("Consulter l'historique");
+        btnHisotrique.setAlignment(Pos.CENTER_RIGHT);
+        btnHisotrique.setOnAction(e -> {
+            Scene historique = HistoriqueReservationsPage.getScene(stage);
+            stage.setScene(historique);
+        });
+        
+        topBox.getChildren().add(btnHisotrique);
 
-        // --- ListView des événements ---
+        // --- ListView ---
         ListView<Evenement> listView = new ListView<>();
 
-        // Données brutes depuis la BDD
         EvenementController evenementController = new EvenementController();
         List<Evenement> evenements = evenementController.getAllEvenements();
         ObservableList<Evenement> masterData = FXCollections.observableArrayList(evenements);
@@ -55,22 +63,21 @@ public class EvenementListPage {
         // Filtrage
         FilteredList<Evenement> filteredData = new FilteredList<>(masterData, ev -> true);
 
-        // Mise à jour de la condition de filtre à chaque changement
-        typeFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
-            appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText());
-        });
+        typeFilter.valueProperty().addListener((obs, oldVal, newVal) ->
+                appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText())
+        );
 
-        lieuFilter.textProperty().addListener((obs, oldVal, newVal) -> {
-            appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText());
-        });
+        lieuFilter.textProperty().addListener((obs, oldVal, newVal) ->
+                appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText())
+        );
 
-        // Tri par date
+        // Tri
         SortedList<Evenement> sortedData = new SortedList<>(filteredData);
         sortedData.setComparator(Comparator.comparing(Evenement::getDate));
 
         listView.setItems(sortedData);
 
-        // Double-clic -> page de détails
+        // Double-clic
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 Evenement selected = listView.getSelectionModel().getSelectedItem();
@@ -79,9 +86,9 @@ public class EvenementListPage {
                     stage.setScene(detailScene);
                 }
             }
-        });
+        }); 
 
-        // Option : sélectionner le premier élément si la liste n'est pas vide
+        // Sélection auto
         if (!sortedData.isEmpty()) {
             listView.getSelectionModel().selectFirst();
         }
@@ -92,7 +99,8 @@ public class EvenementListPage {
         BorderPane.setMargin(listView, new Insets(10));
 
         return new Scene(root, 800, 500);
-    }
+        }
+
 
     /**
      * Applique les filtres de type et de lieu sur la liste filtrée.

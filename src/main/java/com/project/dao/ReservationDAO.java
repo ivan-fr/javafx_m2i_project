@@ -6,6 +6,8 @@ import com.project.entity.evenement.CategoryPlace;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationDAO {
 
@@ -58,4 +60,56 @@ public class ReservationDAO {
             return false;
         }
     }
+    public static List<Reservation> getReservationsByClientId(int clientId) {
+        List<Reservation> list = new ArrayList<>();
+
+        String sql = """
+            SELECT r.id AS res_id,
+                   r.date_reservation,
+                   e.id AS evt_id,
+                   e.nom AS evt_nom,
+                   e.date AS evt_date,
+                   cp.id AS cp_id,
+                   cp.categorie,
+                   cp.prix
+            FROM reservations r
+            JOIN evenements e ON r.evenement_id = e.id
+            JOIN category_places cp ON r.category_place_id = cp.id
+            WHERE r.client_id = ?
+            ORDER BY r.date_reservation DESC
+        """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setInt(1, clientId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Reservation r = new Reservation();
+
+                r.setId(rs.getInt("res_id"));
+                r.setDateReservation(rs.getTimestamp("date_reservation").toLocalDateTime());
+
+                r.setEvenementId(rs.getInt("evt_id"));
+                r.setEvenementNom(rs.getString("evt_nom"));
+                r.setEvenementDate(rs.getTimestamp("evt_date").toLocalDateTime());
+
+                r.setCategoryPlaceId(rs.getInt("cp_id"));
+                r.setCategorie(rs.getString("categorie"));
+                r.setPrixUnitaire(rs.getDouble("prix"));
+
+                r.setNombrePlaces(1); // si tu veux plus tard gérer plusieurs places : changer ici !
+                r.setPrixTotal(r.getPrixUnitaire() * r.getNombrePlaces());
+
+                list.add(r);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 }
