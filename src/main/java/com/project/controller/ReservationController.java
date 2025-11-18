@@ -2,6 +2,8 @@ package com.project.controller;
 
 import com.project.dao.CategoryPlaceDAO;
 import com.project.dao.PaymentDetails;
+import com.project.dao.ReservationDAO;
+import com.project.exception.AnnulationTardiveException;
 import com.project.service.Payable;
 import com.project.service.PayableImpl;
 import com.project.service.Reservable;
@@ -11,7 +13,7 @@ public class ReservationController {
 
     private final Reservable reservable = new ReservableImpl();
     private final Payable payable = new PayableImpl();
-
+    private final ReservationDAO reservationDAO = new ReservationDAO();
 
     public int getPlacesDisponibles(int categoryId){
         CategoryPlaceDAO categoryPlace = new CategoryPlaceDAO();
@@ -38,5 +40,10 @@ public class ReservationController {
 
         // 2. Réserver si paiement OK
         reserve(clientId, eventId, categoryId, quantity);
+    }
+    public void annulerReservation(int reservationId, int clientId)
+            throws AnnulationTardiveException {
+
+        reservationDAO.annulerReservation(reservationId, clientId);
     }
 }
