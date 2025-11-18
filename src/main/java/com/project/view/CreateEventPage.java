@@ -6,6 +6,7 @@ import com.project.util.Session;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -139,6 +140,8 @@ public class CreateEventPage {
             }
         });
 
-        return new Scene(grid, 600, 500);
+        // 🔥 Utilisation du layout commun (header + footer + Bonjour + Déconnexion)
+        BorderPane root = LayoutUtil.createLayout(stage, grid, "");
+        return new Scene(root, 600, 500);
     }
 }

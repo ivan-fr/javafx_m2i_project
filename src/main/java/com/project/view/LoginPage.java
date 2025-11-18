@@ -15,6 +15,10 @@ import javafx.stage.Stage;
 
 public class LoginPage {
     public static Scene getScene(Stage stage) {
+        // --- Titre ---
+        Label welcomeLabel = new Label("Connexion");
+        welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
         // GridPane pour layout
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -90,6 +94,11 @@ public class LoginPage {
             stage.setScene(signupScene);
         });
 
-        return new Scene(grid, 400, 300);
+        // Conteneur principal : titre + formulaire
+        javafx.scene.layout.VBox root = new javafx.scene.layout.VBox(10, welcomeLabel, grid);
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setPadding(new Insets(20));
+
+        return new Scene(root, 400, 300);
     }
 }

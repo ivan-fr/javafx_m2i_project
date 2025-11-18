@@ -23,9 +23,6 @@ public class EvenementListPage {
 
     public static Scene getScene(Stage stage) {
 
-        // --- Titre ---
-        Label welcomeLabel = new Label("Bonjour " + Session.getInstance().getUtilisateur().getNom() + " - Liste des événements");
-
         // --- Filtres ---
         // Filtre type d'événement
         Label typeLabel = new Label("Type :");
@@ -41,7 +38,7 @@ public class EvenementListPage {
         HBox filterBox = new HBox(10, typeLabel, typeFilter, lieuLabel, lieuFilter);
         filterBox.setAlignment(Pos.CENTER_LEFT);
 
-        VBox topBox = new VBox(10, welcomeLabel, filterBox);
+        VBox topBox = new VBox(10, filterBox);
         topBox.setPadding(new Insets(10));
         
         Button btnHisotrique = new Button("Consulter l'historique");
@@ -93,11 +90,12 @@ public class EvenementListPage {
             listView.getSelectionModel().selectFirst();
         }
 
-        BorderPane root = new BorderPane();
-        root.setTop(topBox);
-        root.setCenter(listView);
-        BorderPane.setMargin(listView, new Insets(10));
+        // Créer le contenu principal (centre)
+        VBox mainContent = new VBox(10, topBox, listView);
+        mainContent.setPadding(new Insets(10));
 
+        // Utiliser le layout global avec header + footer + déconnexion
+        BorderPane root = LayoutUtil.createLayout(stage, mainContent, "Liste des événements");
         return new Scene(root, 800, 500);
         }
 
