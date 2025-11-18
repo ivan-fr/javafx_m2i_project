@@ -3,6 +3,7 @@ package com.project.dao;
 import com.project.util.DbConnection;
 import com.project.entity.Reservation;
 import com.project.entity.evenement.CategoryPlace;
+import com.project.exception.AnnulationTardiveException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -111,5 +112,54 @@ public class ReservationDAO {
 
         return list;
     }
+    public void annulerReservation(int reservationId, int clientId)
+            throws AnnulationTardiveException {
 
+        String sqlSelect = """
+            SELECT r.id,
+                   r.client_id,
+                   r.evenement_id,
+                   e.date AS evt_date
+            FROM reservations r
+            JOIN evenements e ON r.evenement_id = e.id
+            WHERE r.id = ?
+        """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sqlSelect)) {
+
+            st.setInt(1, reservationId);
+            ResultSet rs = st.executeQuery();
+
+            if (!rs.next()) {
+                throw new IllegalArgumentException("Réservation introuvable.");
+            }
+
+            int clientIdDb = rs.getInt("client_id");
+            if (clientIdDb != clientId) {
+                throw new IllegalArgumentException("Vous ne pouvez pas annuler cette réservation.");
+            }
+
+            LocalDateTime eventDate = rs.getTimestamp("evt_date").toLocalDateTime();
+            LocalDateTime now = LocalDateTime.now();
+
+            // Règle des 24h
+            if (now.isAfter(eventDate.minusHours(24))) {
+                throw new AnnulationTardiveException(
+                        "Impossible d'annuler moins de 24 heures avant l'événement."
+                );
+            }
+
+            // Si tout est OK → suppression de la réservation
+            String sqlDelete = "DELETE FROM reservations WHERE id = ?";
+            try (PreparedStatement deleteSt = conn.prepareStatement(sqlDelete)) {
+                deleteSt.setInt(1, reservationId);
+                deleteSt.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de l'annulation de la réservation.", e);
+        }
+    }
 }
