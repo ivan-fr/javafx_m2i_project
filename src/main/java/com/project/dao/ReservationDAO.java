@@ -31,7 +31,7 @@ public class ReservationDAO {
         CategoryPlace categoryPlace = new CategoryPlace("", 0, 0.0);
         categoryPlace.setId(reservation.getCategoryPlaceId());
         CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
-        int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryPlace);
+        int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryPlace.getId());
         if (placesDisponibles <= 0) {
             System.out.println("Erreur : Plus de places disponibles pour cette catégorie");
             return false;

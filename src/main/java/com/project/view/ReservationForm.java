@@ -20,13 +20,15 @@ import java.util.Map;
 
 public class ReservationForm {
     public ComboBox<String> categoryCombo = new ComboBox<>();
-    public Map<String, Integer> categoryMap = new HashMap<>();
+    public Map<String, CategoryPlace> categoryMap = new HashMap<>();
     private Label titleLabel;
-    private Label messageLabel;
+    private Label placeLabel;
+
     private Spinner<Integer> qtySpinner;
 
     private ReservationController controller;
     private Evenement event;
+    private Button backBtn;
 
 
     public ReservationForm() {
@@ -38,8 +40,9 @@ public class ReservationForm {
         titleLabel = new Label("Reservation for: " + event.getNom());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        messageLabel = new Label("");
-        messageLabel.setStyle("-fx-text-fill: red;");
+        placeLabel = new Label("");
+         backBtn = new Button("← Back to Events");
+        backBtn.setStyle("-fx-font-size: 14px; -fx-padding: 5px 12px;");
 
         qtySpinner = new Spinner<>(1, 20, 1);
         Button reserveBtn = new Button("Reserve");
@@ -47,39 +50,86 @@ public class ReservationForm {
 
         for (CategoryPlace cat : event.getCategories()) {
             categoryCombo.getItems().add(cat.getCategorie());
-            categoryMap.put(cat.getCategorie(), cat.getId());
+            categoryMap.put(cat.getCategorie(), cat);
         }
 
         categoryCombo.setPromptText("Select category");
+        categoryCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                CategoryPlace category = categoryMap.get(newValue);
+                int placesDisponibles = controller.getPlacesDisponibles(category.getId());
 
+                placeLabel.setText(
+                        "Places restantes : " + placesDisponibles +
+                                "\nNombre total de places : " + category.getNbPlaces()
+                );
+            } else {
+                placeLabel.setText("");
+            }
+        });
+
+        backBtn.setOnAction(e -> {
+             stage.setScene(EvenementListPage.getScene(stage));
+        });
 
         reserveBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-                reserve();
+                reserve(stage);
             }
 
 
         });
-        VBox root = new VBox(15, titleLabel, categoryCombo, qtySpinner, reserveBtn,messageLabel ); root.setPadding(new Insets(20));
+        VBox root = new VBox(15, backBtn,titleLabel, categoryCombo,placeLabel, qtySpinner, reserveBtn);
+        root.setPadding(new Insets(20));
         root.setAlignment(Pos.TOP_CENTER);
         return new Scene(root, 500, 500);
     }
 
-    private void reserve() {
+    private void reserve(Stage stage) {
         int quantity = qtySpinner.getValue();
 
         String selectedCategory = categoryCombo.getValue();
         if (selectedCategory == null) {
-            messageLabel.setText("Please select a category!");
+            showErrorMessage("Please select a category");
             return;
         }
 
-        int selectedCategoryId = categoryMap.get(selectedCategory);
-        boolean result = controller.reserve(Session.getInstance().getUtilisateur().getId(), event.getId(), selectedCategoryId, quantity);
+        int categoryId = categoryMap.get(selectedCategory).getId();
+        int clientId = Session.getInstance().getUtilisateur().getId();
 
-        messageLabel.setText(result ? "Reservation successful!" : "Reservation failed.");
+        try {
+            controller.checkPlace(clientId, event.getId(),categoryId,quantity);
+            // Ouvrir la page paiement
+            PaymentForm paymentForm = new PaymentForm();
+            stage.setScene(paymentForm.getScene(
+                    stage,
+                    clientId,
+                    event.getId(),
+                    categoryId,
+                    quantity
+            ));
+        } catch (Exception e) {
+            showErrorMessage(e.getMessage());
+        }
+
     }
 
+
+    private void showSuccessMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
