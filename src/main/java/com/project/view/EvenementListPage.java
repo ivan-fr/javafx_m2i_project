@@ -41,14 +41,14 @@ public class EvenementListPage {
         VBox topBox = new VBox(10, filterBox);
         topBox.setPadding(new Insets(10));
         
-        Button btnHisotrique = new Button("Consulter l'historique");
-        btnHisotrique.setAlignment(Pos.CENTER_RIGHT);
-        btnHisotrique.setOnAction(e -> {
+        Button btnHistorique = new Button("Consulter l'historique");
+        btnHistorique.setAlignment(Pos.CENTER_RIGHT);
+        btnHistorique.setOnAction(e -> {
             Scene historique = HistoriqueReservationsPage.getScene(stage);
             stage.setScene(historique);
         });
-        
-        topBox.getChildren().add(btnHisotrique);
+
+        topBox.getChildren().add(btnHistorique);
 
         // --- ListView ---
         ListView<Evenement> listView = new ListView<>();
