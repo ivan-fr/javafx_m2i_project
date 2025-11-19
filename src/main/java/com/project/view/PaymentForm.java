@@ -46,7 +46,8 @@ public class PaymentForm {
                 );
 
                 showSuccess("Paiement réussi ! Réservation confirmée.", () -> {
-                    stage.setScene(EvenementListPage.getScene(stage));
+                    EvenementListPage evenementListPage=new EvenementListPage();
+                    stage.setScene(evenementListPage.getScene(stage));
                 });
 
 

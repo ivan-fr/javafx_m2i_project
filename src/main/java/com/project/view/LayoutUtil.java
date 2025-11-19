@@ -33,7 +33,8 @@ public class LayoutUtil {
 
             logoutBtn.setOnAction(e -> {
                 Session.getInstance().clear();
-                stage.setScene(LoginPage.getScene(stage));
+                LoginPage loginPage=new LoginPage();
+                stage.setScene(loginPage.getScene(stage));
             });
 
             header.getChildren().addAll(spacer, userLabel, logoutBtn);

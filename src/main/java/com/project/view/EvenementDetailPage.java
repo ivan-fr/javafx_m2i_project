@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class EvenementDetailPage {
 
-    public static Scene getScene(Stage stage, Evenement evenement) {
+    public Scene getScene(Stage stage, Evenement evenement) {
         stage.setTitle("Détails de l'événement - Plateforme Réservation");
 
         Label title = new Label("Détails de l'événement");
@@ -36,7 +36,8 @@ public class EvenementDetailPage {
         Button btnBack = new Button("Retour à la liste");
         btnBack.setPrefWidth(140);
         btnBack.setOnAction(e -> {
-            Scene listScene = EvenementListPage.getScene(stage);
+            EvenementListPage evenementListPage = new EvenementListPage();
+            Scene listScene = evenementListPage.getScene(stage);
             stage.setScene(listScene);
         });
 

@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class HistoriqueReservationsPage {
 
-    public static Scene getScene(Stage stage) {
+    public Scene getScene(Stage stage) {
         stage.setTitle("Historique des réservations - Plateforme Réservation");
 
         int clientId = Session.getInstance().getUtilisateur().getId();
@@ -91,19 +91,20 @@ public class HistoriqueReservationsPage {
 
         // Bouton Annuler
         Button btnRetour = new Button("Retour");
-        btnRetour.setOnAction(e -> stage.setScene(EvenementListPage.getScene(stage)));
+        EvenementListPage evenementListPage = new EvenementListPage();
+        btnRetour.setOnAction(e -> stage.setScene(evenementListPage.getScene(stage)));
         VBox root = new VBox(10, table, btnRetour);
         root.setPadding(new Insets(10));
 
         return new Scene(root, 800, 550);
     }
 
-    private static void refreshTable(TableView<Reservation> table, int clientId) {
+    private  void refreshTable(TableView<Reservation> table, int clientId) {
         List<Reservation> reservations = ReservationDAO.getReservationsByClientId(clientId);
         table.setItems(FXCollections.observableList(reservations));
     }
     // Gestion du clic sur "Annuler"
-    private static void handleCancel(Reservation reservation,
+    private  void handleCancel(Reservation reservation,
                                      int clientId,
                                      ReservationController controller,
                                      TableView<Reservation> table) {
@@ -131,7 +132,7 @@ public class HistoriqueReservationsPage {
         });
     }
 
-    private static void showInfo(String title, String message) {
+    private  void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -140,7 +141,7 @@ public class HistoriqueReservationsPage {
         alert.showAndWait();
     }
 
-    private static void showError(String title, String message) {
+    private  void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);

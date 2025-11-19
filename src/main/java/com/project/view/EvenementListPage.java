@@ -21,7 +21,7 @@ import java.util.List;
 
 public class EvenementListPage {
 
-    public static Scene getScene(Stage stage) {
+    public Scene getScene(Stage stage) {
         stage.setTitle("Liste des événements - Plateforme Réservation");
 
         // --- Filtres ---
@@ -45,7 +45,8 @@ public class EvenementListPage {
         Button btnHistorique = new Button("Consulter l'historique");
         btnHistorique.setAlignment(Pos.CENTER_RIGHT);
         btnHistorique.setOnAction(e -> {
-            Scene historique = HistoriqueReservationsPage.getScene(stage);
+            HistoriqueReservationsPage historiqueReservationsPage = new HistoriqueReservationsPage();
+            Scene historique = historiqueReservationsPage.getScene(stage);
             stage.setScene(historique);
         });
 
@@ -80,11 +81,12 @@ public class EvenementListPage {
             if (event.getClickCount() == 2) {
                 Evenement selected = listView.getSelectionModel().getSelectedItem();
                 if (selected != null) {
-                    Scene detailScene = EvenementDetailPage.getScene(stage, selected);
+                    EvenementDetailPage evenementDetailPage = new EvenementDetailPage();
+                    Scene detailScene = evenementDetailPage.getScene(stage, selected);
                     stage.setScene(detailScene);
                 }
             }
-        }); 
+        });
 
         // Sélection auto
         if (!sortedData.isEmpty()) {
@@ -98,7 +100,7 @@ public class EvenementListPage {
         // Utiliser le layout global avec header + footer + déconnexion
         BorderPane root = LayoutUtil.createLayout(stage, mainContent, "Liste des événements");
         return new Scene(root, 800, 500);
-        }
+    }
 
 
     /**

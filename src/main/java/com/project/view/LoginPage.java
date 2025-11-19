@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class LoginPage {
-    public static Scene getScene(Stage stage) {
+    public Scene getScene(Stage stage) {
         stage.setTitle("Connexion - Plateforme Réservation");
 
         // --- Titre ---
@@ -72,7 +72,8 @@ public class LoginPage {
             // Rediréction selon le type de l'utilisateur
             if (user instanceof Organisateur) {
                 // Page de création d'événement
-                Scene sceneEvent = StatistiquePage.getScene(stage);
+                StatistiquePage statistiquePage=new StatistiquePage();
+                Scene sceneEvent = statistiquePage.getScene(stage);
                 stage.setScene(sceneEvent);
                 stage.centerOnScreen();
                 stage.show();
@@ -84,7 +85,8 @@ public class LoginPage {
 
             if (user instanceof Client) {
                 // Redirection vers la page liste des événements
-                Scene eventListScene = EvenementListPage.getScene(stage);
+                EvenementListPage evenementListPage= new EvenementListPage();
+                Scene eventListScene = evenementListPage.getScene(stage);
                 stage.setScene(eventListScene);
                 return;
             }
@@ -96,7 +98,8 @@ public class LoginPage {
         Button btnRegister = new Button("Créer un compte");
         grid.add(btnRegister, 1, 4);
         btnRegister.setOnAction(e -> {
-            Scene signupScene = SignupPage.getScene(stage);
+            SignupPage signupPage= new SignupPage();
+            Scene signupScene = signupPage.getScene(stage);
             stage.setScene(signupScene);
         });
 

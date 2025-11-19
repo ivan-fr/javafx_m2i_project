@@ -19,7 +19,7 @@ import java.util.List;
 
 public class StatistiquePage {
 
-    public static Scene getScene(Stage stage) {
+    public Scene getScene(Stage stage) {
         stage.setTitle("Statistiques - Plateforme Réservation");
 
         TableView<EventStats> table = new TableView<>();
@@ -69,7 +69,9 @@ public class StatistiquePage {
         table.setItems(FXCollections.observableList(stats));
 
         Button btnCreation = new Button("Créer une évenement");
-        btnCreation.setOnAction(e -> { stage.setScene(CreateEventPage.getScene(stage));
+        btnCreation.setOnAction(e -> {
+            CreateEventPage createEventPage= new CreateEventPage();
+            stage.setScene(createEventPage.getScene(stage));
                                        stage.centerOnScreen();
         });
 

@@ -71,7 +71,8 @@ public class ReservationForm {
         });
 
         backBtn.setOnAction(e -> {
-             stage.setScene(EvenementListPage.getScene(stage));
+            EvenementListPage evenementListPage= new EvenementListPage();
+            stage.setScene(evenementListPage.getScene(stage));
         });
 
         reserveBtn.setOnAction(new EventHandler<ActionEvent>() {

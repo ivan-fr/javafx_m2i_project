@@ -17,7 +17,7 @@ import java.time.LocalDate;
 
 public class CreateEventPage {
 
-    public static Scene getScene(Stage stage) {
+    public Scene getScene(Stage stage) {
         stage.setTitle("Créer un événement - Plateforme Réservation");
 
         GridPane grid = new GridPane();
@@ -140,8 +140,8 @@ public class CreateEventPage {
                 message.setStyle("-fx-text-fill: red;");
                 message.setText("Erreur lors de la création de l'événement.");
             }
-            
-            Scene statistiqueScence = StatistiquePage.getScene(stage);
+            StatistiquePage statistiquePage= new StatistiquePage();
+            Scene statistiqueScence = statistiquePage.getScene(stage);
             stage.setScene(statistiqueScence);
         });
 
