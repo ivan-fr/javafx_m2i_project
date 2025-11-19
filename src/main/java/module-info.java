@@ -5,6 +5,7 @@ module com.project {
     requires io.github.cdimascio.dotenv.java;
 
     opens com.project.entity to javafx.base;
+    opens com.project.dao to javafx.base;
 
     opens com.project to javafx.fxml;
     exports com.project;

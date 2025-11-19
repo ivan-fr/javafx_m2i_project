@@ -235,7 +235,9 @@ public class EvenementDAO {
 
         String sql = """
             SELECT e.id, e.nom,
-                   SUM(cp.nb_places) AS total_places,
+                   (SELECT SUM(cp2.nb_places)
+                    FROM category_places cp2
+                    WHERE cp2.evenement_id = e.id) AS total_places,
                    COUNT(r.id) AS total_vendus,
                    SUM(CASE WHEN r.id IS NOT NULL THEN cp.prix ELSE 0 END) AS ca
             FROM evenements e
