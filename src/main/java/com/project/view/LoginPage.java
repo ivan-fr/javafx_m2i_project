@@ -70,11 +70,15 @@ public class LoginPage {
             // Rediréction selon le type de l'utilisateur
             if (user instanceof Organisateur) {
                 // Page de création d'événement
-                Scene sceneEvent = CreateEventPage.getScene(stage);
+                Scene sceneEvent = StatistiquePage.getScene(stage);
                 stage.setScene(sceneEvent);
+                stage.centerOnScreen();
                 stage.show();
                 return;
             }
+            
+          
+            
 
             if (user instanceof Client) {
                 // Redirection vers la page liste des événements

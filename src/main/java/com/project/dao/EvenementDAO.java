@@ -6,7 +6,9 @@ import com.project.entity.evenement.*;
 import java.sql.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.sql.Timestamp;
 
 public class EvenementDAO {
@@ -178,6 +180,98 @@ public class EvenementDAO {
         return liste;
     }
     
-   
+    public static Map<String, Integer> getVentesParCategorie(int evenementId) {
+        Map<String, Integer> ventes = new HashMap<>();
 
+        String sql = """
+            SELECT cp.categorie, COUNT(r.id) AS vendues
+            FROM category_places cp
+            LEFT JOIN reservations r ON r.category_place_id = cp.id
+            WHERE cp.evenement_id = ?
+            GROUP BY cp.categorie;
+        """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, evenementId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ventes.put(rs.getString("categorie"), rs.getInt("vendues"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ventes;
+    }
+    
+    public static Map<String, Integer> getCapaciteParCategorie(int evenementId) {
+        Map<String, Integer> capa = new HashMap<>();
+
+        String sql = "SELECT categorie, nb_places FROM category_places WHERE evenement_id=?";
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, evenementId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                capa.put(rs.getString("categorie"), rs.getInt("nb_places"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return capa;
+    }
+    
+    public static List<EventStats> getStatsByOrganisateur(int orgId) {
+        List<EventStats> stats = new ArrayList<>();
+
+        String sql = """
+            SELECT e.id, e.nom,
+                   SUM(cp.nb_places) AS total_places,
+                   COUNT(r.id) AS total_vendus,
+                   SUM(CASE WHEN r.id IS NOT NULL THEN cp.prix ELSE 0 END) AS ca
+            FROM evenements e
+            INNER JOIN category_places cp ON cp.evenement_id = e.id
+            LEFT JOIN reservations r ON r.category_place_id = cp.id
+            WHERE e.organisateur_id = ?
+            GROUP BY e.id, e.nom
+            ORDER BY e.date;
+        """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orgId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nom = rs.getString("nom");
+                int totalPlaces = rs.getInt("total_places");
+                int totalVendus = rs.getInt("total_vendus");
+                double ca = rs.getDouble("ca");
+
+                EventStats es = new EventStats(id, nom, totalPlaces, totalVendus, ca);
+
+                es.setVentesParCategorie(getVentesParCategorie(id));
+                es.setCapaciteParCategorie(getCapaciteParCategorie(id));
+
+                stats.add(es);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
 }
+

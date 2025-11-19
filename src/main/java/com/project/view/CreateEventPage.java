@@ -52,6 +52,7 @@ public class CreateEventPage {
         message.setStyle("-fx-text-fill: red;");
 
         Button btnCreate = new Button("Créer l'événement");
+        
         btnCreate.setStyle("-fx-background-color: #0080ff; -fx-text-fill: white;");
 
         grid.add(new Label("Nom :"), 0, 1);
@@ -138,6 +139,9 @@ public class CreateEventPage {
                 message.setStyle("-fx-text-fill: red;");
                 message.setText("Erreur lors de la création de l'événement.");
             }
+            
+            Scene statistiqueScence = StatistiquePage.getScene(stage);
+            stage.setScene(statistiqueScence);
         });
 
         // 🔥 Utilisation du layout commun (header + footer + Bonjour + Déconnexion)
