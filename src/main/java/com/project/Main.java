@@ -11,7 +11,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Connexion - Plateforme Réservation");
         Scene scene = LoginPage.getScene(primaryStage);
         primaryStage.setScene(scene);
         primaryStage.show();
