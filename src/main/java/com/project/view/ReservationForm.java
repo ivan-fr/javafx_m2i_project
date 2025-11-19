@@ -36,6 +36,8 @@ public class ReservationForm {
     }
 
     public Scene getScene(Stage stage, Evenement event) {
+        stage.setTitle("Réservation - Plateforme Réservation");
+
         this.event = event;
         titleLabel = new Label("Reservation for: " + event.getNom());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");

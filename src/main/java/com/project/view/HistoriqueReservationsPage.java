@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 public class HistoriqueReservationsPage {
 
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Historique des réservations - Plateforme Réservation");
 
         int clientId = Session.getInstance().getUtilisateur().getId();
 

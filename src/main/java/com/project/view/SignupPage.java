@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 public class SignupPage {
 
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Inscription - Plateforme Réservation");
+
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setVgap(10);

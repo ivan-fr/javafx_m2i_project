@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class CreateEventPage {
 
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Créer un événement - Plateforme Réservation");
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);

@@ -22,6 +22,7 @@ import java.util.List;
 public class EvenementListPage {
 
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Liste des événements - Plateforme Réservation");
 
         // --- Filtres ---
         // Filtre type d'événement

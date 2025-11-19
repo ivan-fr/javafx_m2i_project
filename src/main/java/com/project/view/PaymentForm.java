@@ -21,6 +21,7 @@ public class PaymentForm {
                           int eventId,
                           int categoryId,
                           int quantity) {
+        stage.setTitle("Paiement - Plateforme Réservation");
 
         Label title = new Label("Payment Information");
         title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");

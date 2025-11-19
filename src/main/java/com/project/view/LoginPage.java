@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 public class LoginPage {
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Connexion - Plateforme Réservation");
+
         // --- Titre ---
         Label welcomeLabel = new Label("Connexion");
         welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");

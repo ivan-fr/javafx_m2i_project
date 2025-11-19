@@ -20,6 +20,7 @@ import java.util.List;
 public class StatistiquePage {
 
     public static Scene getScene(Stage stage) {
+        stage.setTitle("Statistiques - Plateforme Réservation");
 
         TableView<EventStats> table = new TableView<>();
 

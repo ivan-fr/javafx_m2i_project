@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class EvenementDetailPage {
 
     public static Scene getScene(Stage stage, Evenement evenement) {
+        stage.setTitle("Détails de l'événement - Plateforme Réservation");
 
         Label title = new Label("Détails de l'événement");
 
