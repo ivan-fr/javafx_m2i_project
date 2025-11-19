@@ -1,4 +1,4 @@
-package com.project.dao;
+package com.project.entity;
 
 import java.util.Map;
 

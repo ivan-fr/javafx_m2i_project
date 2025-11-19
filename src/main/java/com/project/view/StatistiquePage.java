@@ -1,7 +1,7 @@
 package com.project.view;
 
 import com.project.dao.EvenementDAO;
-import com.project.dao.EventStats;
+import com.project.entity.EventStats;
 import com.project.util.Session;
 
 import javafx.collections.FXCollections;
