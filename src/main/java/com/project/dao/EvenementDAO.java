@@ -1,7 +1,7 @@
 package com.project.dao;
 
 import com.project.util.DbConnection;
-import com.project.entity.EventStats;
+import com.project.entity.evenement.EventStats;
 import com.project.entity.evenement.*;
 
 import java.sql.*;

@@ -2,7 +2,6 @@ package com.project.entity.evenement;
 
 import com.project.dao.PaymentDetails;
 import com.project.exception.PaiementInvalideException;
-import com.project.service.Payable;
 
 /**
  * Represents a category of seats for an event.

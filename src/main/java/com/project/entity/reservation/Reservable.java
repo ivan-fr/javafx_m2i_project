@@ -1,4 +1,4 @@
-package com.project.service;
+package com.project.entity.reservation;
 
 import com.project.exception.PlacesInsuffisantesException;
 

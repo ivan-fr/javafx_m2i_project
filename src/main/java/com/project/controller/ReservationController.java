@@ -3,7 +3,7 @@ package com.project.controller;
 import com.project.dao.CategoryPlaceDAO;
 import com.project.dao.PaymentDetails;
 import com.project.dao.ReservationDAO;
-import com.project.entity.Reservation;
+import com.project.entity.reservation.Reservation;
 import com.project.exception.AnnulationTardiveException;
 
 import java.time.LocalDateTime;

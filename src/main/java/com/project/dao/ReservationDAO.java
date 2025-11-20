@@ -1,7 +1,7 @@
 package com.project.dao;
 
 import com.project.util.DbConnection;
-import com.project.entity.Reservation;
+import com.project.entity.reservation.Reservation;
 import com.project.entity.evenement.CategoryPlace;
 import com.project.exception.AnnulationTardiveException;
 

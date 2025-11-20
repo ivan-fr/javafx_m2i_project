@@ -1,7 +1,6 @@
-package com.project.entity;
+package com.project.entity.reservation;
 
 import com.project.exception.PlacesInsuffisantesException;
-import com.project.service.Reservable;
 
 import java.time.LocalDateTime;
 

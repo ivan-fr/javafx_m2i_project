@@ -1,7 +1,7 @@
 package com.project.view.statistique;
 
 import com.project.dao.EvenementDAO;
-import com.project.entity.EventStats;
+import com.project.entity.evenement.EventStats;
 import com.project.util.Session;
 
 import com.project.view.LayoutUtil;

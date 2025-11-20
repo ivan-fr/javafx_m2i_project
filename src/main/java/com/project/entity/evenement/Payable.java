@@ -1,4 +1,4 @@
-package com.project.service;
+package com.project.entity.evenement;
 
 import com.project.dao.PaymentDetails;
 import com.project.exception.PaiementInvalideException;

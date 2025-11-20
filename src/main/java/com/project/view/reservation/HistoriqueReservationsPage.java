@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.project.controller.ReservationController;
 import com.project.dao.ReservationDAO;
-import com.project.entity.Reservation;
+import com.project.entity.reservation.Reservation;
 import com.project.exception.AnnulationTardiveException;
 import com.project.util.Session;
 
