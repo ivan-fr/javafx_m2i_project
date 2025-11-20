@@ -1,6 +1,5 @@
 package com.project.view;
 
-
 import com.project.controller.LoginController;
 import com.project.entity.utilisateur.Utilisateur;
 import com.project.entity.utilisateur.Client;
@@ -13,8 +12,20 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Page for user login.
+ * Handles authentication and redirection based on user type.
+ */
 public class LoginPage {
-    public static Scene getScene(Stage stage) {
+    /**
+     * Creates and returns the login scene.
+     * 
+     * @param stage The primary stage.
+     * @return The Login scene.
+     */
+    public Scene getScene(Stage stage) {
+        stage.setTitle("Connexion - Plateforme Réservation");
+
         // --- Titre ---
         Label welcomeLabel = new Label("Connexion");
         welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
@@ -50,7 +61,6 @@ public class LoginPage {
         btnLogin.setOnAction(e -> {
             String email = emailField.getText();
             String password = pwdField.getText();
-            
 
             if (email.isEmpty() || password.isEmpty()) {
                 messageLabel.setText("Veuillez remplir tous les champs !");
@@ -71,19 +81,21 @@ public class LoginPage {
             // Rediréction selon le type de l'utilisateur
             if (user instanceof Organisateur) {
                 // Page de création d'événement
-                Scene sceneEvent = CreateEventPage.getScene(stage);
+                StatistiquePage statistiquePage = new StatistiquePage();
+                Scene sceneEvent = statistiquePage.getScene(stage);
                 stage.setScene(sceneEvent);
+                stage.centerOnScreen();
                 stage.show();
                 return;
             }
 
             if (user instanceof Client) {
                 // Redirection vers la page liste des événements
-                Scene eventListScene = EvenementListPage.getScene(stage);
+                EvenementListPage evenementListPage = new EvenementListPage();
+                Scene eventListScene = evenementListPage.getScene(stage);
                 stage.setScene(eventListScene);
                 return;
             }
-
 
         });
 
@@ -91,7 +103,8 @@ public class LoginPage {
         Button btnRegister = new Button("Créer un compte");
         grid.add(btnRegister, 1, 4);
         btnRegister.setOnAction(e -> {
-            Scene signupScene = SignupPage.getScene(stage);
+            SignupPage signupPage = new SignupPage();
+            Scene signupScene = signupPage.getScene(stage);
             stage.setScene(signupScene);
         });
 

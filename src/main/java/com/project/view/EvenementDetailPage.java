@@ -10,9 +10,21 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Page displaying the details of a specific event.
+ * Allows users to proceed to reservation.
+ */
 public class EvenementDetailPage {
 
-    public static Scene getScene(Stage stage, Evenement evenement) {
+    /**
+     * Creates and returns the scene for event details.
+     * 
+     * @param stage     The primary stage.
+     * @param evenement The event to display.
+     * @return The Event Detail scene.
+     */
+    public Scene getScene(Stage stage, Evenement evenement) {
+        stage.setTitle("Détails de l'événement - Plateforme Réservation");
 
         Label title = new Label("Détails de l'événement");
 
@@ -35,7 +47,8 @@ public class EvenementDetailPage {
         Button btnBack = new Button("Retour à la liste");
         btnBack.setPrefWidth(140);
         btnBack.setOnAction(e -> {
-            Scene listScene = EvenementListPage.getScene(stage);
+            EvenementListPage evenementListPage = new EvenementListPage();
+            Scene listScene = evenementListPage.getScene(stage);
             stage.setScene(listScene);
         });
 
@@ -46,8 +59,7 @@ public class EvenementDetailPage {
                 lblLieu,
                 lblOrganisateur,
                 btnReserver,
-                btnBack
-        );
+                btnBack);
         root.setAlignment(Pos.TOP_LEFT);
         root.setPadding(new Insets(20));
 

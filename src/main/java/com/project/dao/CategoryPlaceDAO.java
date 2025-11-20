@@ -7,35 +7,48 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO for managing seat categories in the database.
+ */
 public class CategoryPlaceDAO {
 
-	public void ajouterCategoryPlace(CategoryPlace categoryPlace) {
-	    String sql = "INSERT INTO category_places (evenement_id, categorie, nb_places, prix) VALUES (?,?,?,?)";
-	    try (Connection conn = DbConnection.getConnection();
-	         PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    /**
+     * Adds a new category to the database.
+     * 
+     * @param categoryPlace The category to add.
+     */
+    public void ajouterCategoryPlace(CategoryPlace categoryPlace) {
+        String sql = "INSERT INTO category_places (evenement_id, categorie, nb_places, prix) VALUES (?,?,?,?)";
+        try (Connection conn = DbConnection.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-	        preparedStatement.setInt(1, categoryPlace.getEvenementId());
-	        preparedStatement.setString(2, categoryPlace.getCategorie());
-	        preparedStatement.setInt(3, categoryPlace.getNbPlaces());
-	        preparedStatement.setDouble(4, categoryPlace.getPrix());
-	        preparedStatement.executeUpdate();
+            preparedStatement.setInt(1, categoryPlace.getEvenementId());
+            preparedStatement.setString(2, categoryPlace.getCategorie());
+            preparedStatement.setInt(3, categoryPlace.getNbPlaces());
+            preparedStatement.setDouble(4, categoryPlace.getPrix());
+            preparedStatement.executeUpdate();
 
-	        ResultSet resultSet = preparedStatement.getGeneratedKeys();
-	        if (resultSet.next()) {
-	            categoryPlace.setId(resultSet.getInt(1));
-	        }
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                categoryPlace.setId(resultSet.getInt(1));
+            }
 
-	    } catch (SQLException exception) {
-	        exception.printStackTrace();
-	    }
-	}
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 
-
+    /**
+     * Retrieves all categories for a specific event.
+     * 
+     * @param evenementID The ID of the event.
+     * @return A list of CategoryPlace objects.
+     */
     public List<CategoryPlace> getCategoryPlacesParEvenement(int evenementID) {
         List<CategoryPlace> liste = new ArrayList<>();
         String sql = "SELECT * FROM category_places WHERE evenement_id=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, evenementID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -54,10 +67,15 @@ public class CategoryPlaceDAO {
         return liste;
     }
 
+    /**
+     * Updates an existing category.
+     * 
+     * @param categoryPlace The category with updated values.
+     */
     public void updateCategoryPlace(CategoryPlace categoryPlace) {
         String sql = "UPDATE category_places SET nb_places=?, prix=? WHERE id=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, categoryPlace.getNbPlaces());
             preparedStatement.setDouble(2, categoryPlace.getPrix());
             preparedStatement.setInt(3, categoryPlace.getId());
@@ -68,8 +86,11 @@ public class CategoryPlaceDAO {
     }
 
     /**
-     * Calcule le nombre de places disponibles pour une category_place
-     * Formule : nb_places - nombre de réservations
+     * Calculates the number of available places for a category.
+     * Formula: total places - number of reservations.
+     * 
+     * @param categoryPlaceId The category ID.
+     * @return The number of available places.
      */
     public int getPlacesDisponibles(int categoryPlaceId) {
         String sql = "SELECT cp.nb_places - COUNT(r.id) AS places_disponibles " +
@@ -78,7 +99,7 @@ public class CategoryPlaceDAO {
                 "WHERE cp.id = ? " +
                 "GROUP BY cp.id, cp.nb_places";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, categoryPlaceId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -89,7 +110,12 @@ public class CategoryPlaceDAO {
         }
         return 0;
     }
-    
+
+    /**
+     * Deletes all categories for a specific event.
+     * 
+     * @param evenementId The event ID.
+     */
     public void supprimerCategoryPlacesParEvenement(int evenementId) {
         try {
             String sql = "DELETE FROM category_places WHERE evenement_id = ?";

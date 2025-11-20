@@ -1,6 +1,9 @@
 package com.project.entity.evenement;
 
-
+/**
+ * Represents a category of seats for an event.
+ * Includes name, capacity, and price.
+ */
 public class CategoryPlace {
     private int id; // pour la BDD
     private int evenementId; // FK vers evenements
@@ -8,48 +11,105 @@ public class CategoryPlace {
     private int nbPlaces;
     private double prix;
 
+    /**
+     * Constructor to create a category.
+     * 
+     * @param categorie Name of the category (e.g., "VIP").
+     * @param nbPlaces  Number of available places.
+     * @param prix      Price per ticket.
+     */
     public CategoryPlace(String categorie, int nbPlaces, double prix) {
         this.categorie = categorie;
         this.nbPlaces = nbPlaces;
         this.prix = prix;
     }
 
+    /**
+     * Returns the category ID.
+     * 
+     * @return The ID.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets the category ID.
+     * 
+     * @param id The new ID.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Returns the event ID.
+     * 
+     * @return The event ID.
+     */
     public int getEvenementId() {
         return evenementId;
     }
 
+    /**
+     * Sets the event ID.
+     * 
+     * @param evenementId The new event ID.
+     */
     public void setEvenementId(int evenementId) {
         this.evenementId = evenementId;
     }
 
+    /**
+     * Returns the category name.
+     * 
+     * @return The name.
+     */
     public String getCategorie() {
         return categorie;
     }
 
+    /**
+     * Sets the category name.
+     * 
+     * @param categorie The new name.
+     */
     public void setCategorie(String categorie) {
         this.categorie = categorie;
     }
 
+    /**
+     * Returns the number of places.
+     * 
+     * @return The capacity.
+     */
     public int getNbPlaces() {
         return nbPlaces;
     }
 
+    /**
+     * Sets the number of places.
+     * 
+     * @param nbPlaces The new capacity.
+     */
     public void setNbPlaces(int nbPlaces) {
         this.nbPlaces = nbPlaces;
     }
 
+    /**
+     * Returns the price.
+     * 
+     * @return The price per ticket.
+     */
     public double getPrix() {
         return prix;
     }
 
+    /**
+     * Sets the price.
+     * 
+     * @param prix The new price.
+     */
     public void setPrix(double prix) {
         this.prix = prix;
     }

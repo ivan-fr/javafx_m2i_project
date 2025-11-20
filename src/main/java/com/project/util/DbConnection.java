@@ -5,15 +5,23 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * Utility class for managing database connections.
+ * Uses environment variables for configuration.
+ */
 public class DbConnection {
     private static Connection conn;
-
 
     private static final Dotenv dotenv = Dotenv.load();
     private static final String URL = dotenv.get("DB_URL");
     private static final String USER = dotenv.get("DB_USER");
     private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
+    /**
+     * Establishes and returns a database connection.
+     * 
+     * @return The active Connection object.
+     */
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -27,11 +35,16 @@ public class DbConnection {
         return conn;
     }
 
+    /**
+     * Closes the current database connection.
+     */
     public static void fermerConnexion() {
         try {
-         /*   if (stmt != null && !stmt.isClosed()) {
-                stmt.close();
-            }*/
+            /*
+             * if (stmt != null && !stmt.isClosed()) {
+             * stmt.close();
+             * }
+             */
             if (conn != null && !conn.isClosed()) {
                 conn.close();
             }

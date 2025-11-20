@@ -10,7 +10,20 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+/**
+ * Utility class for creating the common application layout.
+ * Provides a standard header and footer.
+ */
 public class LayoutUtil {
+    /**
+     * Creates a BorderPane with a standard header and footer.
+     * The header includes the page title and user session info.
+     * 
+     * @param stage         The primary stage.
+     * @param centerContent The content to display in the center.
+     * @param pageTitle     The title of the page.
+     * @return The constructed BorderPane.
+     */
     public static BorderPane createLayout(Stage stage, Node centerContent, String pageTitle) {
 
         // HEADER
@@ -33,7 +46,8 @@ public class LayoutUtil {
 
             logoutBtn.setOnAction(e -> {
                 Session.getInstance().clear();
-                stage.setScene(LoginPage.getScene(stage));
+                LoginPage loginPage = new LoginPage();
+                stage.setScene(loginPage.getScene(stage));
             });
 
             header.getChildren().addAll(spacer, userLabel, logoutBtn);
@@ -55,4 +69,3 @@ public class LayoutUtil {
     }
 
 }
-

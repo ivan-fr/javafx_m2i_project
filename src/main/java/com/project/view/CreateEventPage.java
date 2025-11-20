@@ -15,9 +15,20 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
+/**
+ * Page for creating new events.
+ * Accessible only by organizers.
+ */
 public class CreateEventPage {
 
-    public static Scene getScene(Stage stage) {
+    /**
+     * Creates and returns the scene for creating an event.
+     * 
+     * @param stage The primary stage.
+     * @return The Create Event scene.
+     */
+    public Scene getScene(Stage stage) {
+        stage.setTitle("Créer un événement - Plateforme Réservation");
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -52,6 +63,7 @@ public class CreateEventPage {
         message.setStyle("-fx-text-fill: red;");
 
         Button btnCreate = new Button("Créer l'événement");
+
         btnCreate.setStyle("-fx-background-color: #0080ff; -fx-text-fill: white;");
 
         grid.add(new Label("Nom :"), 0, 1);
@@ -91,7 +103,7 @@ public class CreateEventPage {
             }
 
             if (prixStd.getText().isEmpty() || placesStd.getText().isEmpty() ||
-                prixVIP.getText().isEmpty() || placesVIP.getText().isEmpty()) {
+                    prixVIP.getText().isEmpty() || placesVIP.getText().isEmpty()) {
 
                 message.setText("Veuillez remplir toutes les catégories.");
                 return;
@@ -138,6 +150,9 @@ public class CreateEventPage {
                 message.setStyle("-fx-text-fill: red;");
                 message.setText("Erreur lors de la création de l'événement.");
             }
+            StatistiquePage statistiquePage = new StatistiquePage();
+            Scene statistiqueScence = statistiquePage.getScene(stage);
+            stage.setScene(statistiqueScence);
         });
 
         // 🔥 Utilisation du layout commun (header + footer + Bonjour + Déconnexion)

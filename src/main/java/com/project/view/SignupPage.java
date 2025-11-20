@@ -11,9 +11,21 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Page for user registration.
+ * Handles creation of Client and Organisateur accounts.
+ */
 public class SignupPage {
 
-    public static Scene getScene(Stage stage) {
+    /**
+     * Creates and returns the signup scene.
+     * 
+     * @param stage The primary stage.
+     * @return The Signup scene.
+     */
+    public Scene getScene(Stage stage) {
+        stage.setTitle("Inscription - Plateforme Réservation");
+
         GridPane grid = new GridPane();
         grid.setVgap(10);
         grid.setHgap(10);
@@ -70,28 +82,27 @@ public class SignupPage {
                 messageLabel.setText("L'email est obligatoire.");
                 return;
             }
-            
+
             if (!email.contains("@") || !email.contains(".")) {
                 messageLabel.setText("L'email doit contenir '@' et un '.'");
                 return;
             }
-            
+
             if (password.isEmpty()) {
                 messageLabel.setText("Le mot de passe est obligatoire.");
                 return;
             }
-            
+
             if (password.length() < 4) {
-            	messageLabel.setText("Le mot de passe doit contenir 4 caractères minimum");
-            	return;
+                messageLabel.setText("Le mot de passe doit contenir 4 caractères minimum");
+                return;
             }
-            
+
             if (typeCompte.isEmpty()) {
                 messageLabel.setText("Le type est obligatoire.");
                 return;
             }
-            
-            
+
             Utilisateur utilisateur;
             if (typeCompte.equals("CLIENT")) {
                 utilisateur = new Client(nom, email, password);
@@ -103,7 +114,8 @@ public class SignupPage {
                 UtilisateurDAO dao = new UtilisateurDAO();
                 dao.ajouter(utilisateur);
                 messageLabel.setText("Compte créé avec succès !");
-                Scene loginScene = LoginPage.getScene(stage);
+                LoginPage loginPage = new LoginPage();
+                Scene loginScene = loginPage.getScene(stage);
                 stage.setScene(loginScene);
             } catch (Exception ex) {
                 messageLabel.setText("Erreur lors de la création du compte !");
@@ -116,7 +128,8 @@ public class SignupPage {
         grid.add(btnBack, 1, 6);
 
         btnBack.setOnAction(e -> {
-            Scene loginScene = LoginPage.getScene(stage);
+            LoginPage loginPage = new LoginPage();
+            Scene loginScene = loginPage.getScene(stage);
             stage.setScene(loginScene);
         });
 
