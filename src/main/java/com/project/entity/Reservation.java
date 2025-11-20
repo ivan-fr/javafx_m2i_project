@@ -1,7 +1,5 @@
 package com.project.entity;
 
-import com.project.dao.CategoryPlaceDAO;
-import com.project.dao.ReservationDAO;
 import com.project.exception.PlacesInsuffisantesException;
 import com.project.service.Reservable;
 
@@ -250,20 +248,20 @@ public class Reservation implements Reservable {
      * Checks business rules: availability, valid data, etc.
      * VALIDATION ONLY - does not save to database.
      *
-     * @param categoryDao The DAO to check availability (read-only).
+     * @param placesDisponibles Number of available places for this category.
+     * @param quantite Number of places being requested.
      * @return true if this reservation passes validation.
      * @throws PlacesInsuffisantesException If validation fails.
      */
     @Override
-    public boolean canReserve(CategoryPlaceDAO categoryDao) throws PlacesInsuffisantesException {
+    public boolean canReserve(int placesDisponibles, int quantite) throws PlacesInsuffisantesException {
         // Validate required fields
         if (this.categoryPlaceId <= 0 || this.clientId <= 0 || this.evenementId <= 0) {
             throw new PlacesInsuffisantesException("Données de réservation invalides");
         }
 
         // Check availability
-        int placesDisponibles = categoryDao.getPlacesDisponibles(this.categoryPlaceId);
-        if (placesDisponibles < 1) {
+        if (placesDisponibles < quantite) {
             System.out.println("Erreur : Plus de places disponibles pour cette catégorie");
             throw new PlacesInsuffisantesException("Pas assez de places !");
         }

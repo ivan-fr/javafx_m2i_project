@@ -1,6 +1,5 @@
 package com.project.service;
 
-import com.project.dao.CategoryPlaceDAO;
 import com.project.exception.PlacesInsuffisantesException;
 
 /**
@@ -14,9 +13,10 @@ public interface Reservable {
      * Validates if this reservation can be made.
      * Checks business rules: availability, valid data, etc.
      *
-     * @param categoryDao The DAO to check availability (read-only).
+     * @param placesDisponibles Number of available places for this category.
+     * @param quantite Number of places being requested.
      * @return true if this reservation passes validation.
      * @throws PlacesInsuffisantesException If validation fails.
      */
-    boolean canReserve(CategoryPlaceDAO categoryDao) throws PlacesInsuffisantesException;
+    boolean canReserve(int placesDisponibles, int quantite) throws PlacesInsuffisantesException;
 }

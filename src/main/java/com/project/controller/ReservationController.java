@@ -58,11 +58,13 @@ public class ReservationController {
      * Validates each reservation before saving.
      */
     private void reserve(int clientId, int eventId, int categoryId, int quantity) throws Exception {
+        int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryId);
+
         for (int i = 0; i < quantity; i++) {
             Reservation reservation = new Reservation(clientId, eventId, categoryId, LocalDateTime.now());
 
             // Validate (business rules)
-            if (reservation.canReserve(categoryPlaceDAO)) {
+            if (reservation.canReserve(placesDisponibles, quantity)) {
                 // Save (persistence - handled by controller/DAO)
                 reservationDAO.ajouterReservation(reservation);
             }
@@ -91,7 +93,7 @@ public class ReservationController {
         if (category == null) {
             throw new Exception("Catégorie invalide");
         }
-        category.payer(details);
+        category.canPay(details);
 
         // 2. Reserve if payment OK
         reserve(clientId, eventId, categoryId, quantity);

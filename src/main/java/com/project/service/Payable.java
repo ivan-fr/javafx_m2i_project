@@ -4,15 +4,15 @@ import com.project.dao.PaymentDetails;
 import com.project.exception.PaiementInvalideException;
 
 /**
- * Interface for payment processing.
+ * Interface for payment validation.
  */
 public interface Payable {
     /**
-     * Process a payment.
-     * 
+     * Validates payment details.
+     *
      * @param details The payment details.
-     * @return true if successful.
+     * @return true if payment is valid.
      * @throws PaiementInvalideException If payment details are invalid.
      */
-    boolean payer(PaymentDetails details) throws PaiementInvalideException;
+    boolean canPay(PaymentDetails details) throws PaiementInvalideException;
 }

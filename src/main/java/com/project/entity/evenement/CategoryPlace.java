@@ -128,7 +128,7 @@ public class CategoryPlace implements Payable {
      * @throws PaiementInvalideException If validation fails.
      */
     @Override
-    public boolean payer(PaymentDetails details) throws PaiementInvalideException {
+    public boolean canPay(PaymentDetails details) throws PaiementInvalideException {
         if (details.getNom() == null || details.getNom().isBlank()) {
             throw new PaiementInvalideException("Le nom du titulaire est obligatoire.");
         }
