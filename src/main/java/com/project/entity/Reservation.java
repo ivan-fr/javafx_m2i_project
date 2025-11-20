@@ -1,12 +1,18 @@
 package com.project.entity;
 
+import com.project.dao.CategoryPlaceDAO;
+import com.project.dao.ReservationDAO;
+import com.project.exception.PlacesInsuffisantesException;
+import com.project.service.Reservable;
+
 import java.time.LocalDateTime;
 
 /**
  * Represents a reservation made by a client.
  * Links a user, an event, and a seat category.
+ * Implements Reservable to handle reservation logic.
  */
-public class Reservation {
+public class Reservation implements Reservable {
     private int id; // id en BDD
     private int clientId; // FK vers utilisateurs (CLIENT)
     private int evenementId; // FK vers evenements
@@ -28,7 +34,7 @@ public class Reservation {
 
     /**
      * Constructor to create a new reservation.
-     * 
+     *
      * @param clientId        The client's ID.
      * @param evenementId     The event's ID.
      * @param categoryPlaceId The category ID.
@@ -232,10 +238,36 @@ public class Reservation {
 
     /**
      * Sets the total price.
-     * 
+     *
      * @param prixTotal The new total price.
      */
     public void setPrixTotal(double prixTotal) {
         this.prixTotal = prixTotal;
+    }
+
+    /**
+     * Validates if this reservation can be made.
+     * Checks business rules: availability, valid data, etc.
+     * VALIDATION ONLY - does not save to database.
+     *
+     * @param categoryDao The DAO to check availability (read-only).
+     * @return true if this reservation passes validation.
+     * @throws PlacesInsuffisantesException If validation fails.
+     */
+    @Override
+    public boolean canReserve(CategoryPlaceDAO categoryDao) throws PlacesInsuffisantesException {
+        // Validate required fields
+        if (this.categoryPlaceId <= 0 || this.clientId <= 0 || this.evenementId <= 0) {
+            throw new PlacesInsuffisantesException("Données de réservation invalides");
+        }
+
+        // Check availability
+        int placesDisponibles = categoryDao.getPlacesDisponibles(this.categoryPlaceId);
+        if (placesDisponibles < 1) {
+            System.out.println("Erreur : Plus de places disponibles pour cette catégorie");
+            throw new PlacesInsuffisantesException("Pas assez de places !");
+        }
+
+        return true;
     }
 }

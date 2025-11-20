@@ -1,33 +1,22 @@
 package com.project.service;
 
+import com.project.dao.CategoryPlaceDAO;
 import com.project.exception.PlacesInsuffisantesException;
 
 /**
- * Interface for reservation services.
+ * Interface for validating reservations.
+ * VALIDATION ONLY - does not handle persistence.
+ * Entities implement this to validate business rules.
  */
 public interface Reservable {
 
     /**
-     * Checks if a reservation is possible.
-     * 
-     * @param userId     The user ID.
-     * @param eventId    The event ID.
-     * @param categoryId The category ID.
-     * @param quantite   The number of places.
-     * @return true if possible.
-     * @throws PlacesInsuffisantesException If not enough places.
+     * Validates if this reservation can be made.
+     * Checks business rules: availability, valid data, etc.
+     *
+     * @param categoryDao The DAO to check availability (read-only).
+     * @return true if this reservation passes validation.
+     * @throws PlacesInsuffisantesException If validation fails.
      */
-    boolean isReservable(int userId, int eventId, int categoryId, int quantite)
-            throws PlacesInsuffisantesException;
-
-    /**
-     * Makes a reservation.
-     * 
-     * @param userId     The user ID.
-     * @param eventId    The event ID.
-     * @param categoryId The category ID.
-     * @param quantite   The number of places.
-     * @throws PlacesInsuffisantesException If not enough places.
-     */
-    void reserver(int userId, int eventId, int categoryId, int quantite) throws PlacesInsuffisantesException;
+    boolean canReserve(CategoryPlaceDAO categoryDao) throws PlacesInsuffisantesException;
 }

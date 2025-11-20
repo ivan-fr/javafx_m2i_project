@@ -6,16 +6,19 @@ package com.project.dao;
 public class PaymentDetails {
     private String nom;
     private String numeroCarte;
+    private double montant;
 
     /**
      * Constructor.
-     * 
+     *
      * @param nom         Name on the card.
      * @param numeroCarte Card number.
+     * @param montant     Payment amount.
      */
-    public PaymentDetails(String nom, String numeroCarte) {
+    public PaymentDetails(String nom, String numeroCarte, double montant) {
         this.nom = nom;
         this.numeroCarte = numeroCarte;
+        this.montant = montant;
     }
 
     /**
@@ -29,10 +32,19 @@ public class PaymentDetails {
 
     /**
      * Returns the card number.
-     * 
+     *
      * @return The card number.
      */
     public String getNumeroCarte() {
         return numeroCarte;
+    }
+
+    /**
+     * Returns the payment amount.
+     *
+     * @return The amount.
+     */
+    public double getMontant() {
+        return montant;
     }
 }

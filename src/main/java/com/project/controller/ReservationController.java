@@ -3,24 +3,32 @@ package com.project.controller;
 import com.project.dao.CategoryPlaceDAO;
 import com.project.dao.PaymentDetails;
 import com.project.dao.ReservationDAO;
+import com.project.entity.Reservation;
 import com.project.exception.AnnulationTardiveException;
-import com.project.service.Payable;
-import com.project.service.PayableImpl;
-import com.project.service.Reservable;
-import com.project.service.ReservableImpl;
+
+import java.time.LocalDateTime;
 
 /**
  * Controller for handling reservations and payments.
  */
 public class ReservationController {
 
-    private final Reservable reservable = new ReservableImpl();
-    private final Payable payable = new PayableImpl();
     private final ReservationDAO reservationDAO = new ReservationDAO();
+    private final CategoryPlaceDAO categoryPlaceDAO = new CategoryPlaceDAO();
+
+    /**
+     * Gets a category by its ID.
+     *
+     * @param categoryId The category ID.
+     * @return The CategoryPlace object.
+     */
+    public com.project.entity.evenement.CategoryPlace getCategoryPlaceById(int categoryId) {
+        return categoryPlaceDAO.getCategoryById(categoryId);
+    }
 
     /**
      * Gets the number of available places for a category.
-     * 
+     *
      * @param categoryId The category ID.
      * @return Number of available places.
      */
@@ -31,7 +39,7 @@ public class ReservationController {
 
     /**
      * Checks if a reservation is possible.
-     * 
+     *
      * @param clientId   The client ID.
      * @param eventId    The event ID.
      * @param categoryId The category ID.
@@ -40,19 +48,30 @@ public class ReservationController {
      * @throws Exception If an error occurs.
      */
     public boolean checkPlace(int clientId, int eventId, int categoryId, int quantity) throws Exception {
-        return reservable.isReservable(clientId, eventId, categoryId, quantity);
+        int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryId);
+        return placesDisponibles >= quantity;
     }
 
     /**
      * Internal method to perform the reservation.
+     * Creates individual Reservation instances for each place.
+     * Validates each reservation before saving.
      */
     private void reserve(int clientId, int eventId, int categoryId, int quantity) throws Exception {
-        reservable.reserver(clientId, eventId, categoryId, quantity);
+        for (int i = 0; i < quantity; i++) {
+            Reservation reservation = new Reservation(clientId, eventId, categoryId, LocalDateTime.now());
+
+            // Validate (business rules)
+            if (reservation.canReserve(categoryPlaceDAO)) {
+                // Save (persistence - handled by controller/DAO)
+                reservationDAO.ajouterReservation(reservation);
+            }
+        }
     }
 
     /**
      * Processes payment and creates a reservation.
-     * 
+     *
      * @param clientId   The client ID.
      * @param eventId    The event ID.
      * @param categoryId The category ID.
@@ -67,10 +86,14 @@ public class ReservationController {
             int quantity,
             PaymentDetails details) throws Exception {
 
-        // 1. Vérifier paiement
-        payable.payer(details);
+        // 1. Fetch category and verify payment
+        var category = categoryPlaceDAO.getCategoryById(categoryId);
+        if (category == null) {
+            throw new Exception("Catégorie invalide");
+        }
+        category.payer(details);
 
-        // 2. Réserver si paiement OK
+        // 2. Reserve if payment OK
         reserve(clientId, eventId, categoryId, quantity);
     }
 

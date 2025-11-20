@@ -52,9 +52,14 @@ public class PaymentForm {
 
         payBtn.setOnAction(e -> {
             try {
+                // Get category to calculate total amount
+                var category = controller.getCategoryPlaceById(categoryId);
+                double montantTotal = category.getPrix() * quantity;
+
                 PaymentDetails details = new PaymentDetails(
                         nameField.getText(),
-                        cardField.getText());
+                        cardField.getText(),
+                        montantTotal);
 
                 controller.processPaymentAndReservation(
                         clientId, eventId, categoryId, quantity, details);

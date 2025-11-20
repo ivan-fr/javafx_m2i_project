@@ -112,8 +112,37 @@ public class CategoryPlaceDAO {
     }
 
     /**
+     * Retrieves a category by its ID.
+     *
+     * @param categoryId The category ID.
+     * @return The CategoryPlace object, or null if not found.
+     */
+    public CategoryPlace getCategoryById(int categoryId) {
+        String sql = "SELECT * FROM category_places WHERE id=?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                CategoryPlace categoryPlace = new CategoryPlace(
+                        resultSet.getString("categorie"),
+                        resultSet.getInt("nb_places"),
+                        resultSet.getDouble("prix"));
+                categoryPlace.setId(resultSet.getInt("id"));
+                categoryPlace.setEvenementId(resultSet.getInt("evenement_id"));
+                return categoryPlace;
+            }
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Deletes all categories for a specific event.
-     * 
+     *
      * @param evenementId The event ID.
      */
     public void supprimerCategoryPlacesParEvenement(int evenementId) {

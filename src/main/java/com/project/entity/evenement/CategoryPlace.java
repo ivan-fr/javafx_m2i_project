@@ -1,10 +1,15 @@
 package com.project.entity.evenement;
 
+import com.project.dao.PaymentDetails;
+import com.project.exception.PaiementInvalideException;
+import com.project.service.Payable;
+
 /**
  * Represents a category of seats for an event.
  * Includes name, capacity, and price.
+ * Payable - validates payment for this category.
  */
-public class CategoryPlace {
+public class CategoryPlace implements Payable {
     private int id; // pour la BDD
     private int evenementId; // FK vers evenements
     private String categorie;
@@ -107,10 +112,36 @@ public class CategoryPlace {
 
     /**
      * Sets the price.
-     * 
+     *
      * @param prix The new price.
      */
     public void setPrix(double prix) {
         this.prix = prix;
+    }
+
+    /**
+     * Validates payment for this category.
+     * Checks payment details and ensures amount covers this category's price.
+     *
+     * @param details The payment details.
+     * @return true if valid.
+     * @throws PaiementInvalideException If validation fails.
+     */
+    @Override
+    public boolean payer(PaymentDetails details) throws PaiementInvalideException {
+        if (details.getNom() == null || details.getNom().isBlank()) {
+            throw new PaiementInvalideException("Le nom du titulaire est obligatoire.");
+        }
+
+        if (details.getNumeroCarte() == null || !details.getNumeroCarte().matches("\\d{16}")) {
+            throw new PaiementInvalideException("Numéro de carte invalide (doit contenir 16 chiffres).");
+        }
+
+        if (details.getMontant() < this.prix) {
+            throw new PaiementInvalideException(
+                    "Montant insuffisant pour " + this.categorie + ". Prix requis : " + this.prix + "€");
+        }
+
+        return true;
     }
 }
