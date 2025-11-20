@@ -49,7 +49,8 @@ public class ReservationController {
      */
     public boolean checkPlace(int clientId, int eventId, int categoryId, int quantity) throws Exception {
         int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryId);
-        return placesDisponibles >= quantity;
+        Reservation reservation = new Reservation(clientId, eventId, categoryId, LocalDateTime.now());
+        return reservation.canReserve(placesDisponibles,quantity);
     }
 
     /**
@@ -101,7 +102,7 @@ public class ReservationController {
 
     /**
      * Cancels a reservation.
-     * 
+     *
      * @param reservationId The reservation ID.
      * @param clientId      The client ID.
      * @throws AnnulationTardiveException If cancelled too late.
