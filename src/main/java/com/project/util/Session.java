@@ -3,22 +3,23 @@ package com.project.util;
 import com.project.entity.utilisateur.Utilisateur;
 
 /**
- * Singleton pour gérer la session utilisateur courante
- * Stocke l'utilisateur connecté à travers toute l'application
+ * Singleton to manage the current user session.
+ * Stores the logged-in user throughout the application.
  */
 public class Session {
     private static Session instance;
     private Utilisateur utilisateur;
 
     /**
-     * Constructeur privé pour empêcher l'instanciation directe
+     * Private constructor to prevent direct instantiation.
      */
-    private Session() {}
+    private Session() {
+    }
 
     /**
-     * Récupère l'instance unique de Session (Singleton pattern)
-     *
-     * @return L'instance unique de Session
+     * Returns the unique instance of Session.
+     * 
+     * @return The singleton instance.
      */
     public static Session getInstance() {
         if (instance == null) {
@@ -28,34 +29,34 @@ public class Session {
     }
 
     /**
-     * Définit l'utilisateur courant de la session
-     *
-     * @param u L'utilisateur à stocker dans la session
+     * Sets the current user of the session.
+     * 
+     * @param u The user to store.
      */
     public void setUtilisateur(Utilisateur u) {
         utilisateur = u;
     }
 
     /**
-     * Récupère l'utilisateur courant de la session
-     *
-     * @return L'utilisateur connecté, ou null si aucun utilisateur n'est connecté
+     * Returns the current user.
+     * 
+     * @return The logged-in user, or null if none.
      */
     public Utilisateur getUtilisateur() {
         return utilisateur;
     }
 
     /**
-     * Vérifie si un utilisateur est connecté
-     *
-     * @return true si un utilisateur est connecté, false sinon
+     * Checks if a user is logged in.
+     * 
+     * @return true if logged in, false otherwise.
      */
     public boolean isLoggedIn() {
         return utilisateur != null;
     }
 
     /**
-     * Déconnecte l'utilisateur courant et nettoie la session
+     * Logs out the current user and clears the session.
      */
     public void clear() {
         utilisateur = null;

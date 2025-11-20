@@ -11,8 +11,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Page for user registration.
+ * Handles creation of Client and Organisateur accounts.
+ */
 public class SignupPage {
 
+    /**
+     * Creates and returns the signup scene.
+     * 
+     * @param stage The primary stage.
+     * @return The Signup scene.
+     */
     public Scene getScene(Stage stage) {
         stage.setTitle("Inscription - Plateforme Réservation");
 
@@ -21,7 +31,6 @@ public class SignupPage {
         grid.setHgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         grid.setAlignment(Pos.TOP_CENTER);
-
 
         // Nom
         Label nomLabel = new Label("Nom :");
@@ -92,7 +101,6 @@ public class SignupPage {
                 messageLabel.setText("Le type est obligatoire.");
                 return;
             }
-
 
             Utilisateur utilisateur;
             if (typeCompte.equals("CLIENT")) {

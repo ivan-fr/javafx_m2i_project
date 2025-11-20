@@ -14,8 +14,18 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.lang.reflect.Constructor;
 
+/**
+ * DAO for managing events in the database.
+ * Handles CRUD operations and statistics.
+ */
 public class EvenementDAO {
 
+    /**
+     * Adds a new event to the database.
+     * Also saves the associated seat categories.
+     * 
+     * @param evenement The event to add.
+     */
     public void ajouterEvenement(Evenement evenement) {
         String sql = "INSERT INTO evenements (nom,date,lieu,type_evenement,organisateur_id) VALUES (?,?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
@@ -48,6 +58,12 @@ public class EvenementDAO {
         }
     }
 
+    /**
+     * Updates an existing event.
+     * Also updates the associated seat categories.
+     * 
+     * @param evt The event with updated values.
+     */
     public void modifierEvenement(Evenement evt) {
         try {
             String sql = "UPDATE evenements SET nom=?, date=?, lieu=?, organisateur_id=? WHERE id=?";
@@ -75,6 +91,12 @@ public class EvenementDAO {
         }
     }
 
+    /**
+     * Deletes an event by its ID.
+     * Also deletes associated categories.
+     * 
+     * @param id The ID of the event to delete.
+     */
     public void supprimerEvenement(int id) {
         try {
             CategoryPlaceDAO cpDAO = new CategoryPlaceDAO();
@@ -92,6 +114,13 @@ public class EvenementDAO {
         }
     }
 
+    /**
+     * Retrieves an event by its ID.
+     * Loads the event details and its categories.
+     * 
+     * @param id The event ID.
+     * @return The Evenement object, or null if not found.
+     */
     public Evenement getEvenementById(int id) {
         try {
             String sql = "SELECT * FROM evenements WHERE id=?";
@@ -158,6 +187,11 @@ public class EvenementDAO {
         }
     }
 
+    /**
+     * Lists all events ordered by date.
+     * 
+     * @return A list of all events.
+     */
     public List<Evenement> listerEvenements() {
         List<Evenement> liste = new ArrayList<>();
         String sql = "SELECT * FROM evenements ORDER BY date";
@@ -190,6 +224,12 @@ public class EvenementDAO {
         return liste;
     }
 
+    /**
+     * Gets sales count per category for an event.
+     * 
+     * @param evenementId The event ID.
+     * @return A map of category name to number of sales.
+     */
     public static Map<String, Integer> getVentesParCategorie(int evenementId) {
         Map<String, Integer> ventes = new HashMap<>();
 
@@ -218,6 +258,12 @@ public class EvenementDAO {
         return ventes;
     }
 
+    /**
+     * Gets total capacity per category for an event.
+     * 
+     * @param evenementId The event ID.
+     * @return A map of category name to capacity.
+     */
     public static Map<String, Integer> getCapaciteParCategorie(int evenementId) {
         Map<String, Integer> capa = new HashMap<>();
 
@@ -240,6 +286,13 @@ public class EvenementDAO {
         return capa;
     }
 
+    /**
+     * Retrieves statistics for all events of a specific organizer.
+     * Includes total places, sales, and revenue.
+     * 
+     * @param orgId The organizer's ID.
+     * @return A list of EventStats objects.
+     */
     public static List<EventStats> getStatsByOrganisateur(int orgId) {
         List<EventStats> stats = new ArrayList<>();
 

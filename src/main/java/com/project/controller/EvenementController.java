@@ -5,12 +5,15 @@ import com.project.entity.evenement.Evenement;
 
 import java.util.List;
 
+/**
+ * Controller for handling event-related operations.
+ */
 public class EvenementController {
 
     /**
-     * Récupère la liste de tous les événements
-     *
-     * @return Liste des événements
+     * Retrieves all events.
+     * 
+     * @return A list of all events.
      */
     public List<Evenement> getAllEvenements() {
         EvenementDAO evenementDAO = new EvenementDAO();
@@ -18,10 +21,10 @@ public class EvenementController {
     }
 
     /**
-     * Récupère un événement par son ID
-     *
-     * @param id L'identifiant de l'événement
-     * @return L'événement trouvé, ou null si non trouvé
+     * Finds an event by its ID.
+     * 
+     * @param id The event ID.
+     * @return The event if found, null otherwise.
      */
     public Evenement getEvenementById(int id) {
         EvenementDAO evenementDAO = new EvenementDAO();
@@ -29,9 +32,9 @@ public class EvenementController {
     }
 
     /**
-     * Modifie un événement existant
-     *
-     * @param evenement L'événement à modifier
+     * Updates an existing event.
+     * 
+     * @param evenement The event with updated details.
      */
     public void updateEvenement(Evenement evenement) {
         EvenementDAO evenementDAO = new EvenementDAO();
@@ -39,10 +42,11 @@ public class EvenementController {
     }
 
     /**
-     * Crée un nouvel événement
-     *
-     * @param evenement L'événement à créer
-     * @return true si la création a réussi, false sinon
+     * Creates a new event.
+     * Validates the event data before saving.
+     * 
+     * @param evenement The event to create.
+     * @return true if created successfully, false if invalid.
      */
     public boolean createEvenement(Evenement evenement) {
         // Validation
@@ -78,9 +82,9 @@ public class EvenementController {
     }
 
     /**
-     * Supprime un événement
-     *
-     * @param id L'identifiant de l'événement à supprimer
+     * Deletes an event.
+     * 
+     * @param id The ID of the event to delete.
      */
     public void deleteEvenement(int id) {
         EvenementDAO evenementDAO = new EvenementDAO();

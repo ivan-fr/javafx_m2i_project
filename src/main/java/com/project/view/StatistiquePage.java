@@ -13,8 +13,18 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Page displaying event statistics for organizers.
+ * Shows sales, revenue, and attendance data.
+ */
 public class StatistiquePage {
 
+    /**
+     * Creates and returns the statistics scene.
+     * 
+     * @param stage The primary stage.
+     * @return The Statistics scene.
+     */
     public Scene getScene(Stage stage) {
         stage.setTitle("Statistiques - Plateforme Réservation");
 

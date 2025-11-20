@@ -3,7 +3,19 @@ package com.project.service;
 import com.project.dao.PaymentDetails;
 import com.project.exception.PaiementInvalideException;
 
+/**
+ * Implementation of the payment service.
+ * Validates payment details.
+ */
 public class PayableImpl implements Payable {
+    /**
+     * Validates and processes the payment.
+     * Checks for valid name and card number format.
+     * 
+     * @param details The payment details.
+     * @return true if valid.
+     * @throws PaiementInvalideException If validation fails.
+     */
     @Override
     public boolean payer(PaymentDetails details) throws PaiementInvalideException {
 

@@ -17,8 +17,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Page displaying the reservation history for a client.
+ * Allows cancellation of reservations.
+ */
 public class HistoriqueReservationsPage {
 
+    /**
+     * Creates and returns the scene for reservation history.
+     * 
+     * @param stage The primary stage.
+     * @return The History scene.
+     */
     public Scene getScene(Stage stage) {
         stage.setTitle("Historique des réservations - Plateforme Réservation");
 
@@ -30,22 +40,16 @@ public class HistoriqueReservationsPage {
         colEvent.setCellValueFactory(new PropertyValueFactory<>("evenementNom"));
 
         TableColumn<Reservation, String> colDateEvt = new TableColumn<>("Date de l'événement");
-        colDateEvt.setCellValueFactory(r ->
-                new SimpleStringProperty(r.getValue().getEvenementDate().toString())
-        );
+        colDateEvt.setCellValueFactory(r -> new SimpleStringProperty(r.getValue().getEvenementDate().toString()));
 
         TableColumn<Reservation, String> colCategorie = new TableColumn<>("Catégorie");
         colCategorie.setCellValueFactory(new PropertyValueFactory<>("categorie"));
 
         TableColumn<Reservation, String> colPrix = new TableColumn<>("Total payé (€)");
-        colPrix.setCellValueFactory(r ->
-                new SimpleStringProperty(String.valueOf(r.getValue().getPrixTotal()))
-        );
+        colPrix.setCellValueFactory(r -> new SimpleStringProperty(String.valueOf(r.getValue().getPrixTotal())));
 
         TableColumn<Reservation, String> colDateRes = new TableColumn<>("Réservé le");
-        colDateRes.setCellValueFactory(r ->
-                new SimpleStringProperty(r.getValue().getDateReservation().toString())
-        );
+        colDateRes.setCellValueFactory(r -> new SimpleStringProperty(r.getValue().getDateReservation().toString()));
 
         // --- Colonne Action avec bouton "Annuler" ---
         // Controller de réservation
@@ -62,8 +66,7 @@ public class HistoriqueReservationsPage {
                                 "-fx-text-fill: white;" +
                                 "-fx-font-weight: bold;" +
                                 "-fx-background-radius: 5px;" +
-                                "-fx-padding: 5 10 5 10;"
-                );
+                                "-fx-padding: 5 10 5 10;");
 
                 btn.setOnAction(e -> {
                     Reservation reservation = getTableView().getItems().get(getIndex());
@@ -99,15 +102,30 @@ public class HistoriqueReservationsPage {
         return new Scene(root, 800, 550);
     }
 
-    private  void refreshTable(TableView<Reservation> table, int clientId) {
+    /**
+     * Refreshes the table data from the database.
+     * 
+     * @param table    The table view to update.
+     * @param clientId The client ID.
+     */
+    private void refreshTable(TableView<Reservation> table, int clientId) {
         List<Reservation> reservations = ReservationDAO.getReservationsByClientId(clientId);
         table.setItems(FXCollections.observableList(reservations));
     }
-    // Gestion du clic sur "Annuler"
-    private  void handleCancel(Reservation reservation,
-                                     int clientId,
-                                     ReservationController controller,
-                                     TableView<Reservation> table) {
+
+    /**
+     * Handles the cancellation of a reservation.
+     * Shows a confirmation dialog before cancelling.
+     * 
+     * @param reservation The reservation to cancel.
+     * @param clientId    The client ID.
+     * @param controller  The reservation controller.
+     * @param table       The table view to refresh after cancellation.
+     */
+    private void handleCancel(Reservation reservation,
+            int clientId,
+            ReservationController controller,
+            TableView<Reservation> table) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Annuler la réservation");
         confirm.setHeaderText(null);
@@ -132,7 +150,13 @@ public class HistoriqueReservationsPage {
         });
     }
 
-    private  void showInfo(String title, String message) {
+    /**
+     * Displays an information alert.
+     * 
+     * @param title   The alert title.
+     * @param message The alert message.
+     */
+    private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -141,7 +165,13 @@ public class HistoriqueReservationsPage {
         alert.showAndWait();
     }
 
-    private  void showError(String title, String message) {
+    /**
+     * Displays an error alert.
+     * 
+     * @param title   The alert title.
+     * @param message The alert message.
+     */
+    private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);

@@ -11,15 +11,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * DAO for managing users in the database.
+ * Handles login, registration, and CRUD operations.
+ */
 public class UtilisateurDAO {
     private Connection conn;
 
+    /**
+     * Constructor.
+     * Initializes the database connection.
+     */
     public UtilisateurDAO() {
         this.conn = DbConnection.getConnection();
     }
 
-
-    // Méthode qui retourne un ArrayList d'objets Utilisateur
+    /**
+     * Lists all users in the system.
+     * 
+     * @return A list of Utilisateur objects.
+     */
     public ArrayList<Utilisateur> lister() {
         ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
         try {
@@ -32,16 +43,14 @@ public class UtilisateurDAO {
                 String type = resultSet.getString("type_compte");
                 if (type.equalsIgnoreCase("CLIENT")) {
                     utilisateur = new Client(
-                        resultSet.getString("nom"),
-                        resultSet.getString("email"),
-                        resultSet.getString("mot_de_passe")
-                    );
+                            resultSet.getString("nom"),
+                            resultSet.getString("email"),
+                            resultSet.getString("mot_de_passe"));
                 } else {
                     utilisateur = new Organisateur(
-                        resultSet.getString("nom"),
-                        resultSet.getString("email"),
-                        resultSet.getString("mot_de_passe")
-                    );
+                            resultSet.getString("nom"),
+                            resultSet.getString("email"),
+                            resultSet.getString("mot_de_passe"));
                 }
                 utilisateur.setId(resultSet.getInt("id"));
                 utilisateur.setDateCreation(resultSet.getTimestamp("date_creation"));
@@ -57,7 +66,11 @@ public class UtilisateurDAO {
         return listeUtilisateurs;
     }
 
-    // Ajouter un utilisateur avec un objet Utilisateur
+    /**
+     * Adds a new user to the database.
+     * 
+     * @param utilisateur The user to add.
+     */
     public void ajouter(Utilisateur utilisateur) {
         try {
             String sql = "INSERT INTO utilisateurs (nom, email, mot_de_passe, type_compte) VALUES (?, ?, ?, ?)";
@@ -76,15 +89,22 @@ public class UtilisateurDAO {
         }
     }
 
+    /**
+     * Authenticates a user.
+     * 
+     * @param email      The email address.
+     * @param motDePasse The password.
+     * @return The Utilisateur object if successful, null otherwise.
+     */
     public Utilisateur login(String email, String motDePasse) {
         String sql = "SELECT * FROM utilisateurs WHERE email=? AND mot_de_passe=?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, motDePasse);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-            	String type = resultSet.getString("type_compte");
+                String type = resultSet.getString("type_compte");
 
                 Utilisateur user;
                 if (type.equals("ORGANISATEUR")) {
@@ -93,21 +113,26 @@ public class UtilisateurDAO {
                     user = new Client();
                 }
 
-                user.setId(resultSet.getInt("id"));                      //  ⛔ tu as oublié ça !
+                user.setId(resultSet.getInt("id")); // ⛔ tu as oublié ça !
                 user.setNom(resultSet.getString("nom"));
                 user.setEmail(resultSet.getString("email"));
                 user.setMotDePasse(resultSet.getString("mot_de_passe"));
                 user.setTypeCompte(type);
 
                 return user;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return null;
     }
-}
-    // Supprimer un utilisateur avec un objet Utilisateur
+
+    /**
+     * Deletes a user from the database.
+     * 
+     * @param utilisateur The user to delete.
+     */
     public void supprimer(Utilisateur utilisateur) {
         try {
             String sql = "DELETE FROM utilisateurs WHERE id = ?";
@@ -128,7 +153,11 @@ public class UtilisateurDAO {
         }
     }
 
-    // Mettre à jour un utilisateur
+    /**
+     * Updates a user's information.
+     * 
+     * @param utilisateur The user with updated details.
+     */
     public void modifier(Utilisateur utilisateur) {
         try {
             String sql = "UPDATE utilisateurs SET nom = ?, email = ?, mot_de_passe = ?, type_compte = ? WHERE id = ?";

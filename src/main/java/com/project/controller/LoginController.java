@@ -3,14 +3,17 @@ package com.project.controller;
 import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Utilisateur;
 
+/**
+ * Controller for user authentication.
+ */
 public class LoginController {
 
     /**
-     * Authentifie un utilisateur avec son email et mot de passe
-     *
-     * @param email L'email de l'utilisateur
-     * @param password Le mot de passe de l'utilisateur
-     * @return L'utilisateur authentifié, ou null si l'authentification échoue
+     * Authenticates a user.
+     * 
+     * @param email    The user's email.
+     * @param password The user's password.
+     * @return The authenticated user, or null if failed.
      */
     public Utilisateur login(String email, String password) {
         // Validation des entrées
