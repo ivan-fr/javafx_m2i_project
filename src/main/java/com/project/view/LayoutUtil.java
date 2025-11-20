@@ -17,6 +17,16 @@ import javafx.stage.Stage;
  */
 public class LayoutUtil {
     /**
+     * The default width for the application window.
+     */
+    public final static int PARAM_WIDTH = 900;
+
+    /**
+     * The default height for the application window.
+     */
+    public final static int PARAM_HEIGHT = 600;
+
+    /**
      * Creates a BorderPane with a standard header and footer.
      * The header includes the page title and user session info.
      *
@@ -25,10 +35,6 @@ public class LayoutUtil {
      * @param pageTitle     The title of the page.
      * @return The constructed BorderPane.
      */
-
-    public final static int PARAM_WIDTH = 900;
-    public final static int PARAM_HEIGHT = 600;
-
     public static BorderPane createLayout(Stage stage, Node centerContent, String pageTitle) {
 
         // HEADER
