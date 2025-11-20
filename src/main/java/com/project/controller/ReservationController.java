@@ -115,13 +115,13 @@ public class ReservationController {
         int placesDisponibles = categoryPlaceDAO.getPlacesDisponibles(categoryId);
 
         for (int i = 0; i < quantity; i++) {
-            // Create concrete instance
-            Reservation reservation = new Reservation(clientId, eventId, categoryId, LocalDateTime.now());
+            // Create instance using interface type for polymorphism
+            Reservable reservable = new Reservation(clientId, eventId, categoryId, LocalDateTime.now());
 
             // Validate using polymorphism (Reservable interface)
-            if (validateReservation(reservation, placesDisponibles, quantity)) {
-                // Save (persistence - handled by controller/DAO)
-                reservationDAO.ajouterReservation(reservation);
+            if (validateReservation(reservable, placesDisponibles, quantity)) {
+                // Save (persistence - cast back to concrete type for DAO)
+                reservationDAO.ajouterReservation((Reservation) reservable);
             }
         }
     }
