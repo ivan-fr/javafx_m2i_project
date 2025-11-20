@@ -113,7 +113,7 @@ public class LoginPage {
 
         // Conteneur principal : titre + formulaire
         javafx.scene.layout.VBox root = new javafx.scene.layout.VBox(10, welcomeLabel, grid);
-        root.setAlignment(Pos.TOP_CENTER);
+        root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(20));
 
         return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
