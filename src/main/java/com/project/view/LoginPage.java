@@ -44,6 +44,7 @@ public class LoginPage {
 
         // Bouton de connexion
         Button btnLogin = new Button("Se connecter");
+        btnLogin.setDefaultButton(true);
         grid.add(btnLogin, 1, 3);
 
         btnLogin.setOnAction(e -> {
