@@ -11,13 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.lang.reflect.Constructor;
 
 public class EvenementDAO {
 
     public void ajouterEvenement(Evenement evenement) {
         String sql = "INSERT INTO evenements (nom,date,lieu,type_evenement,organisateur_id) VALUES (?,?,?,?,?)";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             String type = evenement.getClass().getSimpleName().toUpperCase();
 
@@ -45,7 +47,7 @@ public class EvenementDAO {
             exception.printStackTrace();
         }
     }
-    
+
     public void modifierEvenement(Evenement evt) {
         try {
             String sql = "UPDATE evenements SET nom=?, date=?, lieu=?, organisateur_id=? WHERE id=?";
@@ -72,7 +74,7 @@ public class EvenementDAO {
             e.printStackTrace();
         }
     }
-    
+
     public void supprimerEvenement(int id) {
         try {
             CategoryPlaceDAO cpDAO = new CategoryPlaceDAO();
@@ -89,7 +91,7 @@ public class EvenementDAO {
             e.printStackTrace();
         }
     }
-    
+
     public Evenement getEvenementById(int id) {
         try {
             String sql = "SELECT * FROM evenements WHERE id=?";
@@ -128,27 +130,40 @@ public class EvenementDAO {
         String lieu = rs.getString("lieu");
         int organisateurId = rs.getInt("organisateur_id");
 
-        Evenement evenement = switch (type.toUpperCase()) {
-            case "CONCERT" -> new Concert(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-            case "SPECTACLE" -> new Spectacle(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-            case "CONFERENCE" -> new Conference(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-            default -> throw new Exception("Type d'événement inconnu : " + type);
-        };
+        Evenement evenement = createEventInstance(type, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
+
+        if (evenement == null) {
+            throw new Exception("Impossible d'instancier l'événement de type : " + type);
+        }
 
         evenement.setId(id);
         return evenement;
     }
 
+    private Evenement createEventInstance(String type, String nom, LocalDateTime date, String lieu,
+            int organisateurId) {
+        try {
+            // Convertir "CONCERT" -> "Concert", "SPECTACLE" -> "Spectacle"
+            String className = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
+            String fullClassName = "com.project.entity.evenement." + className;
 
+            Class<?> clazz = Class.forName(fullClassName);
+            Constructor<?> constructor = clazz.getConstructor(String.class, LocalDateTime.class, String.class,
+                    int.class);
 
-    
-    
+            return (Evenement) constructor.newInstance(nom, date, lieu, organisateurId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Evenement> listerEvenements() {
         List<Evenement> liste = new ArrayList<>();
         String sql = "SELECT * FROM evenements ORDER BY date";
         try (Connection conn = DbConnection.getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql)) {
 
             while (resultSet.next()) {
                 String nom = resultSet.getString("nom");
@@ -158,13 +173,7 @@ public class EvenementDAO {
                 int idEvenement = resultSet.getInt("id");
                 int organisateurId = resultSet.getInt("organisateur_id");
 
-
-                Evenement evenement = switch (type.toUpperCase()) {
-                case "CONCERT" -> new Concert(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-                case "SPECTACLE" -> new Spectacle(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-                case "CONFERENCE" -> new Conference(nom, timestamp.toLocalDateTime(), lieu, organisateurId);
-                default -> throw new IllegalArgumentException("Type inconnu : " + type);
-            };
+                Evenement evenement = createEventInstance(type, nom, timestamp.toLocalDateTime(), lieu, organisateurId);
 
                 if (evenement != null) {
                     evenement.setId(idEvenement);
@@ -180,20 +189,20 @@ public class EvenementDAO {
         }
         return liste;
     }
-    
+
     public static Map<String, Integer> getVentesParCategorie(int evenementId) {
         Map<String, Integer> ventes = new HashMap<>();
 
         String sql = """
-            SELECT cp.categorie, COUNT(r.id) AS vendues
-            FROM category_places cp
-            LEFT JOIN reservations r ON r.category_place_id = cp.id
-            WHERE cp.evenement_id = ?
-            GROUP BY cp.categorie;
-        """;
+                    SELECT cp.categorie, COUNT(r.id) AS vendues
+                    FROM category_places cp
+                    LEFT JOIN reservations r ON r.category_place_id = cp.id
+                    WHERE cp.evenement_id = ?
+                    GROUP BY cp.categorie;
+                """;
 
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, evenementId);
             ResultSet rs = ps.executeQuery();
@@ -208,14 +217,14 @@ public class EvenementDAO {
 
         return ventes;
     }
-    
+
     public static Map<String, Integer> getCapaciteParCategorie(int evenementId) {
         Map<String, Integer> capa = new HashMap<>();
 
         String sql = "SELECT categorie, nb_places FROM category_places WHERE evenement_id=?";
 
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, evenementId);
             ResultSet rs = ps.executeQuery();
@@ -230,27 +239,27 @@ public class EvenementDAO {
 
         return capa;
     }
-    
+
     public static List<EventStats> getStatsByOrganisateur(int orgId) {
         List<EventStats> stats = new ArrayList<>();
 
         String sql = """
-            SELECT e.id, e.nom,
-                   (SELECT SUM(cp2.nb_places)
-                    FROM category_places cp2
-                    WHERE cp2.evenement_id = e.id) AS total_places,
-                   COUNT(r.id) AS total_vendus,
-                   SUM(CASE WHEN r.id IS NOT NULL THEN cp.prix ELSE 0 END) AS ca
-            FROM evenements e
-            INNER JOIN category_places cp ON cp.evenement_id = e.id
-            LEFT JOIN reservations r ON r.category_place_id = cp.id
-            WHERE e.organisateur_id = ?
-            GROUP BY e.id, e.nom
-            ORDER BY e.date;
-        """;
+                    SELECT e.id, e.nom,
+                           (SELECT SUM(cp2.nb_places)
+                            FROM category_places cp2
+                            WHERE cp2.evenement_id = e.id) AS total_places,
+                           COUNT(r.id) AS total_vendus,
+                           SUM(CASE WHEN r.id IS NOT NULL THEN cp.prix ELSE 0 END) AS ca
+                    FROM evenements e
+                    INNER JOIN category_places cp ON cp.evenement_id = e.id
+                    LEFT JOIN reservations r ON r.category_place_id = cp.id
+                    WHERE e.organisateur_id = ?
+                    GROUP BY e.id, e.nom
+                    ORDER BY e.date;
+                """;
 
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, orgId);
             ResultSet rs = ps.executeQuery();
@@ -277,4 +286,3 @@ public class EvenementDAO {
         return stats;
     }
 }
-
