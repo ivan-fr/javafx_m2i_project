@@ -23,3 +23,12 @@ java_fx_project/
 ```bash
 mvn clean javafx:run
 ```
+
+## Documentation
+
+To generate the Javadoc documentation, run the following command:
+
+```bash
+mvn javadoc:javadoc
+```
+The generated documentation will be available in `target/reports/apidocs/index.html`.

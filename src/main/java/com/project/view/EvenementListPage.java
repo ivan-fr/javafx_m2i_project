@@ -19,8 +19,18 @@ import javafx.stage.Stage;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Page displaying the list of all events.
+ * Includes filtering and sorting functionalities.
+ */
 public class EvenementListPage {
 
+    /**
+     * Creates and returns the scene for the event list.
+     * 
+     * @param stage The primary stage.
+     * @return The Event List scene.
+     */
     public Scene getScene(Stage stage) {
         stage.setTitle("Liste des événements - Plateforme Réservation");
 
@@ -41,7 +51,7 @@ public class EvenementListPage {
 
         VBox topBox = new VBox(10, filterBox);
         topBox.setPadding(new Insets(10));
-        
+
         Button btnHistorique = new Button("Consulter l'historique");
         btnHistorique.setAlignment(Pos.CENTER_RIGHT);
         btnHistorique.setOnAction(e -> {
@@ -62,13 +72,11 @@ public class EvenementListPage {
         // Filtrage
         FilteredList<Evenement> filteredData = new FilteredList<>(masterData, ev -> true);
 
-        typeFilter.valueProperty().addListener((obs, oldVal, newVal) ->
-                appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText())
-        );
+        typeFilter.valueProperty().addListener(
+                (obs, oldVal, newVal) -> appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText()));
 
-        lieuFilter.textProperty().addListener((obs, oldVal, newVal) ->
-                appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText())
-        );
+        lieuFilter.textProperty().addListener(
+                (obs, oldVal, newVal) -> appliquerFiltres(filteredData, typeFilter.getValue(), lieuFilter.getText()));
 
         // Tri
         SortedList<Evenement> sortedData = new SortedList<>(filteredData);
@@ -102,13 +110,16 @@ public class EvenementListPage {
         return new Scene(root, 800, 500);
     }
 
-
     /**
-     * Applique les filtres de type et de lieu sur la liste filtrée.
+     * Applies filters to the event list.
+     * 
+     * @param filteredData The list to filter.
+     * @param typeChoisi   The selected event type.
+     * @param lieuTexte    The text for location filtering.
      */
     private static void appliquerFiltres(FilteredList<Evenement> filteredData,
-                                         String typeChoisi,
-                                         String lieuTexte) {
+            String typeChoisi,
+            String lieuTexte) {
 
         String typeFiltre = (typeChoisi == null) ? "Tous" : typeChoisi;
         String lieuFiltre = (lieuTexte == null) ? "" : lieuTexte.trim().toLowerCase();
