@@ -17,10 +17,11 @@ public class SignupPage {
         stage.setTitle("Inscription - Plateforme Réservation");
 
         GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
         grid.setVgap(10);
         grid.setHgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
+        grid.setAlignment(Pos.TOP_CENTER);
+
 
         // Nom
         Label nomLabel = new Label("Nom :");

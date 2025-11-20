@@ -27,7 +27,6 @@ public class ReservationDAO {
             reservation.setDateReservation(LocalDateTime.now());
         }
 
-        // Vérification : Y a-t-il encore des places disponibles ?
         // Créer un objet CategoryPlace temporaire avec l'ID pour la vérification
         CategoryPlace categoryPlace = new CategoryPlace("", 0, 0.0);
         categoryPlace.setId(reservation.getCategoryPlaceId());
