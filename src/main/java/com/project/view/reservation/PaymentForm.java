@@ -1,8 +1,10 @@
-package com.project.view;
+package com.project.view.reservation;
 
 import com.project.controller.ReservationController;
 
 import com.project.dao.PaymentDetails;
+import com.project.view.LayoutUtil;
+import com.project.view.event.EvenementListPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -71,7 +73,7 @@ public class PaymentForm {
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
 
-        return new Scene(root, 400, 350);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 
     /**

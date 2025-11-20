@@ -1,10 +1,13 @@
-package com.project.view;
+package com.project.view.authentification;
 
 import com.project.controller.LoginController;
 import com.project.entity.utilisateur.Utilisateur;
 import com.project.entity.utilisateur.Client;
 import com.project.entity.utilisateur.Organisateur;
 import com.project.util.Session;
+import com.project.view.LayoutUtil;
+import com.project.view.statistique.StatistiquePage;
+import com.project.view.event.EvenementListPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -113,6 +116,6 @@ public class LoginPage {
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(20));
 
-        return new Scene(root, 400, 300);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 }

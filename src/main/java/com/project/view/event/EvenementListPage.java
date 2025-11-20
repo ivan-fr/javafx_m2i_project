@@ -1,8 +1,9 @@
-package com.project.view;
+package com.project.view.event;
 
 import com.project.controller.EvenementController;
 import com.project.entity.evenement.Evenement;
-import com.project.util.Session;
+import com.project.view.reservation.HistoriqueReservationsPage;
+import com.project.view.LayoutUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -107,7 +108,7 @@ public class EvenementListPage {
 
         // Utiliser le layout global avec header + footer + déconnexion
         BorderPane root = LayoutUtil.createLayout(stage, mainContent, "Liste des événements");
-        return new Scene(root, 800, 500);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 
     /**

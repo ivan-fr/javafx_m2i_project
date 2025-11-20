@@ -2,6 +2,7 @@ package com.project.view;
 
 import com.project.util.Session;
 import com.project.entity.utilisateur.Utilisateur;
+import com.project.view.authentification.LoginPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,12 +19,16 @@ public class LayoutUtil {
     /**
      * Creates a BorderPane with a standard header and footer.
      * The header includes the page title and user session info.
-     * 
+     *
      * @param stage         The primary stage.
      * @param centerContent The content to display in the center.
      * @param pageTitle     The title of the page.
      * @return The constructed BorderPane.
      */
+
+    public final static int PARAM_WIDTH = 900;
+    public final static int PARAM_HEIGHT = 600;
+
     public static BorderPane createLayout(Stage stage, Node centerContent, String pageTitle) {
 
         // HEADER

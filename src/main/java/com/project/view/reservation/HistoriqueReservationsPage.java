@@ -1,4 +1,4 @@
-package com.project.view;
+package com.project.view.reservation;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import com.project.entity.Reservation;
 import com.project.exception.AnnulationTardiveException;
 import com.project.util.Session;
 
+import com.project.view.LayoutUtil;
+import com.project.view.event.EvenementListPage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -99,7 +101,7 @@ public class HistoriqueReservationsPage {
         VBox root = new VBox(10, table, btnRetour);
         root.setPadding(new Insets(10));
 
-        return new Scene(root, 800, 550);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 
     /**

@@ -1,9 +1,11 @@
-package com.project.view;
+package com.project.view.event;
 
 import com.project.entity.evenement.*;
 import com.project.controller.EvenementController;
 import com.project.util.Session;
 
+import com.project.view.LayoutUtil;
+import com.project.view.statistique.StatistiquePage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -122,7 +124,7 @@ public class CreateEventPage {
                 return;
             }
 
-            // 🔥 Création de l'événement
+            //  Création de l'événement
             int organisateurId = Session.getInstance().getUtilisateur().getId();
             Evenement evt = switch (type) {
                 case "CONCERT" -> new Concert(nom, date.atStartOfDay(), lieu, organisateurId);
@@ -131,14 +133,14 @@ public class CreateEventPage {
                 default -> null;
             };
 
-            // 🔥 Créer les catégories et les ajouter à l'événement AVANT de sauvegarder
+            //  Créer les catégories et les ajouter à l'événement AVANT de sauvegarder
             CategoryPlace standard = new CategoryPlace("STANDARD", placesStandard, prixStandard);
             CategoryPlace vip = new CategoryPlace("VIP", placesVip, prixVip);
 
             evt.getCategories().add(standard);
             evt.getCategories().add(vip);
 
-            // 🔥 Créer l'événement via le controller
+            //  Créer l'événement via le controller
             EvenementController controller = new EvenementController();
             boolean success = controller.createEvenement(evt);
 
@@ -155,8 +157,8 @@ public class CreateEventPage {
             stage.setScene(statistiqueScence);
         });
 
-        // 🔥 Utilisation du layout commun (header + footer + Bonjour + Déconnexion)
+        //  Utilisation du layout commun (header + footer + Bonjour + Déconnexion)
         BorderPane root = LayoutUtil.createLayout(stage, grid, "");
-        return new Scene(root, 600, 500);
+        return new Scene(root,LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 }

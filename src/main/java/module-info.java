@@ -19,4 +19,8 @@ module com.project {
     exports com.project.service;
     exports com.project.util;
     exports com.project.view;
+    exports com.project.view.event;
+    exports com.project.view.authentification;
+    exports com.project.view.reservation;
+    exports com.project.view.statistique;
 }

@@ -1,10 +1,13 @@
-package com.project.view;
+package com.project.view.reservation;
 
 import com.project.controller.ReservationController;
 
 import com.project.entity.evenement.CategoryPlace;
 import com.project.entity.evenement.Evenement;
 import com.project.util.Session;
+import com.project.view.LayoutUtil;
+import com.project.view.event.EvenementListPage;
+import com.project.view.reservation.PaymentForm;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -98,7 +101,7 @@ public class ReservationForm {
         VBox root = new VBox(15, backBtn, titleLabel, categoryCombo, placeLabel, qtySpinner, reserveBtn);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.TOP_CENTER);
-        return new Scene(root, 500, 500);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 
     /**

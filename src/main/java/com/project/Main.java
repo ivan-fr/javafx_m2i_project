@@ -1,6 +1,6 @@
 package com.project;
 
-import com.project.view.LoginPage;
+import com.project.view.authentification.LoginPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

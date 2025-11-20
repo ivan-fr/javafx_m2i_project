@@ -1,7 +1,8 @@
-package com.project.view;
+package com.project.view.event;
 
 import com.project.entity.evenement.Evenement;
-import com.project.util.Session;
+import com.project.view.LayoutUtil;
+import com.project.view.reservation.ReservationForm;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -63,6 +64,6 @@ public class EvenementDetailPage {
         root.setAlignment(Pos.TOP_LEFT);
         root.setPadding(new Insets(20));
 
-        return new Scene(root, 400, 320);
+        return new Scene(root, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 }

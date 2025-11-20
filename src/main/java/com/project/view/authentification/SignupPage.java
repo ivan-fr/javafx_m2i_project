@@ -1,9 +1,10 @@
-package com.project.view;
+package com.project.view.authentification;
 
 import com.project.dao.UtilisateurDAO;
 import com.project.entity.utilisateur.Client;
 import com.project.entity.utilisateur.Organisateur;
 import com.project.entity.utilisateur.Utilisateur;
+import com.project.view.LayoutUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -133,6 +134,6 @@ public class SignupPage {
             stage.setScene(loginScene);
         });
 
-        return new Scene(grid, 400, 300);
+        return new Scene(grid, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 }

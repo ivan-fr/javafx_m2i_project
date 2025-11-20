@@ -1,9 +1,11 @@
-package com.project.view;
+package com.project.view.statistique;
 
 import com.project.dao.EvenementDAO;
 import com.project.entity.EventStats;
 import com.project.util.Session;
 
+import com.project.view.LayoutUtil;
+import com.project.view.event.CreateEventPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -76,6 +78,6 @@ public class StatistiquePage {
 
         BorderPane layout = LayoutUtil.createLayout(stage, content, "Statistiques");
 
-        return new Scene(layout, 900, 600);
+        return new Scene(layout, LayoutUtil.PARAM_WIDTH,  LayoutUtil.PARAM_HEIGHT);
     }
 }
