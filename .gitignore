@@ -61,3 +61,6 @@ Thumbs.db
 *.fxml~
 .env
 /target/
+
+# Javadoc
+target/reports/apidocs/

@@ -8,5 +8,15 @@ module com.project {
     opens com.project.dao to javafx.base;
 
     opens com.project to javafx.fxml;
+
     exports com.project;
+    exports com.project.controller;
+    exports com.project.dao;
+    exports com.project.entity;
+    exports com.project.entity.evenement;
+    exports com.project.entity.utilisateur;
+    exports com.project.exception;
+    exports com.project.service;
+    exports com.project.util;
+    exports com.project.view;
 }
